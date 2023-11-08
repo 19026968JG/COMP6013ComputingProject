@@ -5,23 +5,57 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.workouttrackerapplication.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_workouts"
+            app:destination="@id/navigation_workouts" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.workouttrackerapplication.ui.dashboard.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_navigation_workouts"
+            app:destination="@id/navigation_workouts" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_workouts"
         android:name="com.example.workouttrackerapplication.ui.notifications.WorkoutsFragment"
         android:label="@string/title_workouts"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_workouts" >
+        <action
+            android:id="@+id/action_navigation_workouts_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_workouts_to_navigation_dashboard"
+            app:destination="@id/navigation_dashboard" />
+    </fragment>
 
 
 </navigation>

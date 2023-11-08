@@ -18,14 +18,14 @@ public class WorkoutsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        WorkoutsViewModel workoutsViewModel =
+                new ViewModelProvider(this).get(WorkoutsViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        workoutsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
