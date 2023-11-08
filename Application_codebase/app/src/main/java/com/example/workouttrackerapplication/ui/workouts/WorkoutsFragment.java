@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication.ui.notifications;
+package com.example.workouttrackerapplication.ui.workouts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.workouttrackerapplication.databinding.FragmentNotificationsBinding;
+import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 
 public class WorkoutsFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentWorkoutsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         WorkoutsViewModel workoutsViewModel =
                 new ViewModelProvider(this).get(WorkoutsViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;

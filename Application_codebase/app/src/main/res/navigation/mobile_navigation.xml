@@ -46,7 +46,7 @@
 
     <fragment
         android:id="@+id/navigation_workouts"
-        android:name="com.example.workouttrackerapplication.ui.notifications.WorkoutsFragment"
+        android:name="com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment"
         android:label="@string/title_workouts"
         tools:layout="@layout/fragment_workouts" >
         <action

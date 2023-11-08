@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication.ui.notifications;
+package com.example.workouttrackerapplication.ui.workouts;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
