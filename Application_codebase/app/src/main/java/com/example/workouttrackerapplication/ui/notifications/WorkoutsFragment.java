@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.workouttrackerapplication.databinding.FragmentNotificationsBinding;
 
-public class NotificationsFragment extends Fragment {
+public class WorkoutsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
