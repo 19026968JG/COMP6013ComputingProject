@@ -8,4 +8,5 @@
 
     <string name="homepage_greeting">WELCOME! Lets get a Workout Going!</string>
     <string name="workouts_completed">you have completed NULL workouts this month</string>
+    <string name="workouts_placeholder">workouts scroll view</string>
 </resources>

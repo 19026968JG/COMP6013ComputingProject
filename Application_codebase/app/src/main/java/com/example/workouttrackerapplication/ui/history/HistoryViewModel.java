@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication.ui.dashboard;
+package com.example.workouttrackerapplication.ui.history;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
