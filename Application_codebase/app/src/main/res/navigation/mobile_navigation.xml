@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.workouttrackerapplication.ui.dashboard.DashboardFragment"
+        android:name="com.example.workouttrackerapplication.ui.dashboard.HistoryFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -40,8 +40,8 @@
             android:id="@+id/action_navigation_workouts_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
-            android:id="@+id/action_navigation_workouts_to_navigation_dashboard"
-            app:destination="@id/navigation_dashboard" />
+            android:id="@+id/action_navigation_workouts_to_navigation_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
 
