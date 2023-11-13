@@ -16,5 +16,8 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
+        <item name="colorAccent">?attr/colorSecondaryVariant</item>
+        <item name="textAppearanceButton">@color/white</item>
+
     </style>
 </resources>

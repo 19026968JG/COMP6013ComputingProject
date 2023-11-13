@@ -4,16 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.workouttrackerapplication.MainActivity;
+import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
+import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class WorkoutsFragment extends Fragment {
-
     private FragmentWorkoutsBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -24,8 +33,16 @@ public class WorkoutsFragment extends Fragment {
         binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.workoutsText;
-        workoutsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.addNewWorkoutButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.workouts_page,new createWorkoutFragment())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
         return root;
     }
 
@@ -34,4 +51,5 @@ public class WorkoutsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

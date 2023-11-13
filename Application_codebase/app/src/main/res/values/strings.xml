@@ -5,8 +5,14 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_workouts">Workouts</string>
     <string name="title_history">History</string>
+    <string name="title_create_workout">Create Workout</string>
 
     <string name="homepage_greeting">WELCOME! Lets get a Workout Going!</string>
     <string name="workouts_completed">you have completed NULL workouts this month</string>
-    <string name="workouts_placeholder">workouts scroll view</string>
+    <string name="workouts_placeholder">Workouts Page</string>
+
+    <string name="add_workout">New Workout Template</string>
+    <string name="add_new_workout_button_description">Add new Workout Template</string>
+    <string name="title_activity_create_workout_screen">createWorkoutScreen</string>
+
 </resources>
