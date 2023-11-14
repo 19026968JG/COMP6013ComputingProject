@@ -24,12 +24,16 @@
         android:name="com.example.workouttrackerapplication.ui.history.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" >
-        <action
+        <!--<action
             android:id="@+id/action_navigation_history_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_navigation_history_to_navigation_workouts"
-            app:destination="@id/navigation_workouts" />
+            app:destination="@id/navigation_workouts"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />-->
     </fragment>
 
     <fragment
@@ -37,12 +41,16 @@
         android:name="com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment"
         android:label="@string/title_workouts"
         tools:layout="@layout/fragment_workouts" >
-        <action
+        <!--<action
             android:id="@+id/action_navigation_workouts_to_navigation_home"
-            app:destination="@id/navigation_home" />
-        <action
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />-->
+        <!--<action
             android:id="@+id/action_navigation_workouts_to_navigation_history"
-            app:destination="@id/navigation_history" />
+            app:destination="@id/navigation_history"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />-->
         <action
             android:id="@+id/action_navigation_workouts_to_create_workout"
             app:destination="@id/navigation_create_workout" />
