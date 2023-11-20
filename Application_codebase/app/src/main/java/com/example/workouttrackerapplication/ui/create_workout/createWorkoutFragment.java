@@ -1,103 +1,35 @@
 package com.example.workouttrackerapplication.ui.create_workout;
-import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.ExerciseModel;
-import com.example.workouttrackerapplication.WorkoutModel;
-import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
 
-import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.text.TextUtils;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+
+import com.example.workouttrackerapplication.MainActivity;
+import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
+import java.util.Objects;
+
 
 public class createWorkoutFragment extends Fragment {
-
     FragmentCreateWorkoutBinding binding;
-    DatabaseSavedWorkouts databaseSavedWorkouts;
-    @SuppressLint("StaticFieldLeak")
-    static ListView wList;
-    static ArrayList<ExerciseModel> displayList ;
-
-
     public createWorkoutFragment() {
+        // Required empty public constructor
     }
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                            Bundle savedInstanceState) {
-        binding = FragmentCreateWorkoutBinding.inflate(inflater, container, false);
+private BottomNavigationView bottomNavigationView;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        binding = FragmentCreateWorkoutBinding.inflate(inflater,container,false);
+        View root = binding.getRoot();
         // Inflate the layout for this fragment
 
-        displayList = new ArrayList<>();
-        wList = binding.workoutList;
-        databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
-        //display current template on list
-
-        binding.addExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateExerciseDialogFragment dialogFragment = new CreateExerciseDialogFragment();
-                dialogFragment.show(requireActivity().getSupportFragmentManager(), "    add_ex_dialog");
-
-                ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, createWorkoutFragment.displayList);
-                wList.setAdapter(createWorkoutArrayAdapter);
-            }
-        });
-
-        binding.saveWorkoutButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-                if (TextUtils.isEmpty(binding.workoutTitleInput.getText().toString())){
-                    Toast.makeText(getContext(), "Please Enter A Workout Title", Toast.LENGTH_LONG).show();
-                }
-                else if (wList.getCount() == 0){
-                    Toast.makeText(getContext(), "You Cannot Save an Empty Workout. \n" +
-                            "Please Add One or More Exercises to Save", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    FragmentManager manager = requireActivity().getSupportFragmentManager();
-                    Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
-
-                    /*
-                    //TODO
-                    * fix this so it saves the
-                    * listview item to the database
-                    */
-
-                    WorkoutModel workoutModel = new WorkoutModel(
-                            -1,
-                            binding.workoutTitleInput.getText().toString());
-                    try {
-                        databaseSavedWorkouts.addToWorkoutTable(workoutModel);
-                        for(int i = 0; i < displayList.size(); i++) {
-                            databaseSavedWorkouts.addToExerciseTable(displayList.get(i));
-                            databaseSavedWorkouts.addToExerciseValuesTable(displayList.get(i));
-                        }
-                    }catch (Exception e){
-                        Toast.makeText(getContext(),"Error Adding Workout", Toast.LENGTH_SHORT).show();
-                    }
-                    manager.popBackStack();
-                }
-            }
-        });
-
-        return binding.getRoot();
-    }
-    public void updateListView() {
-        ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, createWorkoutFragment.displayList);
-        wList.setAdapter(createWorkoutArrayAdapter);
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+        return root;
     }
 }
