@@ -1,46 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/create_workout_page"
+    android:theme="@style/Theme.WorkoutTrackerApplication.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.create_workout.createWorkoutFragment">
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/idRLContainer"
+    app:layout_constraintVertical_bias="0.0" >
 
-    <TextView
-        android:id="@+id/page_title_create_workout"
-        android:layout_width="180dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:text="Create Workout"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/create_workout_page"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        tools:context=".ui.create_workout.createWorkoutFragment">
 
-        app:layout_constraintTop_toBottomOf="@+id/page_title_create_workout"
-        tools:layout_editor_absoluteY="56dp" />
+        <TextView
+            android:id="@+id/page_title_create_workout"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:background="@color/dark_slate_grey"
+            android:ems="10"
+            android:text="Create Workout"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/add_exercise_button"
-        android:layout_width="290dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="32dp"
-        android:background="@color/dark_slate_grey"
-        android:text="Add Exercse"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="409dp"
+            android:layout_height="49dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/enter_workout_name"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/page_title_create_workout" />
+
+        <RelativeLayout
+            android:id="@+id/idRLContainer"
+            android:layout_width="412dp"
+            android:layout_height="548dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText">
+
+            <Button
+                android:id="@+id/add_new_exercise_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/white"
+                android:text="Add"
+                android:backgroundTint="?attr/colorPrimaryVariant"
+                />
+
+            <EditText
+                android:id="@+id/editTextText3"
+                android:layout_width="322dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:ems="10"
+                android:inputType="text"
+                android:text="exercise name" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/add_workout_button"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:text="@string/add_exercise_button"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:backgroundTint="?attr/colorPrimaryVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idRLContainer" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

@@ -15,4 +15,7 @@
     <string name="add_new_workout_button_description">Add new Workout Template</string>
     <string name="title_activity_create_workout_screen">createWorkoutScreen</string>
 
+    <string name="enter_workout_name">New Template Title</string>
+    <string name="add_exercise_button">Add Workout</string>
+
 </resources>
