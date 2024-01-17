@@ -27,15 +27,13 @@ public class createExerciseDialogFragment extends AppCompatDialogFragment {
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        final EditText exName = new EditText(getContext());
-        final EditText sets = new EditText(getContext());
-
         builder.setView(inflater.inflate(R.layout.alert_dialogue, null))
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
+                            EditText exName = (EditText)getDialog().findViewById(R.id.exercise_name_input);
+                            EditText sets = (EditText)getDialog().findViewById(R.id.sets_input);
                             WorkoutModel workoutModel = new WorkoutModel(
                                     exName.getText().toString(),
                                     Integer.parseInt(sets.getText().toString()),

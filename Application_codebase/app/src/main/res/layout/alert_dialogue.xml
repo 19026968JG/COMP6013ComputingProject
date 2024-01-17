@@ -8,10 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="34dp"
         android:background="@color/dark_slate_grey"
-        android:text="Add Exercise"
+        android:text="@string/add_exercise_title"
         android:textAlignment="center"
         android:textColor="@color/white"
         />
+
     <EditText
         android:id="@+id/exercise_name_input"
         android:layout_width="match_parent"
@@ -19,12 +20,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#36454F"
+        android:backgroundTint="@color/white"
         android:ems="10"
         android:hint="@string/ex_name"
         android:inputType="text"
-        android:textColorHint="#FFFFFF"
-        />
+        android:textColorHint="#FFFFFF" />
 
     <EditText
         android:id="@+id/sets_input"
@@ -33,10 +33,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:backgroundTint="#36454F"
+        android:backgroundTint="@color/white"
         android:ems="10"
         android:hint="@string/sets"
         android:inputType="number"
-        android:textColorHint="#FFFFFF" />
+        android:textColorHint="#FFFFFF"
+        android:visibility="visible" />
 
 </LinearLayout>
