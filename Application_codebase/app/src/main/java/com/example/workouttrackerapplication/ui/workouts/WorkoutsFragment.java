@@ -1,5 +1,6 @@
 package com.example.workouttrackerapplication.ui.workouts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -21,6 +23,7 @@ import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class WorkoutsFragment extends Fragment {
     private FragmentWorkoutsBinding binding;
@@ -32,14 +35,16 @@ public class WorkoutsFragment extends Fragment {
 
         binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        binding.addNewWorkoutButton.setOnClickListener(new View.OnClickListener(){
+        binding.fabAddWorkoutButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.workouts_page,new createWorkoutFragment())
-                        .addToBackStack(null)
-                        .commit();
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+
+                transaction.add(R.id.workouts_page, new createWorkoutFragment());
+                transaction.addToBackStack("Create workout transition");
+                binding.fabAddWorkoutButton.hide();
+                transaction.commit();
             }
         });
 

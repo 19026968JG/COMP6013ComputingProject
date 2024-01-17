@@ -24,16 +24,7 @@
         android:name="com.example.workouttrackerapplication.ui.history.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" >
-        <!--<action
-            android:id="@+id/action_navigation_history_to_navigation_home"
-            app:destination="@id/navigation_home"
-            app:enterAnim="@android:anim/slide_out_right"
-            app:exitAnim="@android:anim/slide_in_left" />
-        <action
-            android:id="@+id/action_navigation_history_to_navigation_workouts"
-            app:destination="@id/navigation_workouts"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />-->
+
     </fragment>
 
     <fragment
@@ -41,16 +32,7 @@
         android:name="com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment"
         android:label="@string/title_workouts"
         tools:layout="@layout/fragment_workouts" >
-        <!--<action
-            android:id="@+id/action_navigation_workouts_to_navigation_home"
-            app:destination="@id/navigation_home"
-            app:enterAnim="@android:anim/slide_out_right"
-            app:exitAnim="@android:anim/slide_in_left" />-->
-        <!--<action
-            android:id="@+id/action_navigation_workouts_to_navigation_history"
-            app:destination="@id/navigation_history"
-            app:enterAnim="@android:anim/slide_out_right"
-            app:exitAnim="@android:anim/slide_in_left" />-->
+
         <action
             android:id="@+id/action_navigation_workouts_to_create_workout"
             app:destination="@id/navigation_create_workout" />
@@ -60,8 +42,7 @@
         android:id="@+id/navigation_create_workout"
         android:name="com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment"
         android:label="@string/title_create_workout"
-        tools:layout="@layout/fragment_create_workout">
-    </fragment>
+        tools:layout="@layout/fragment_create_workout"/>
 
 
 
