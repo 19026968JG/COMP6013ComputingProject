@@ -18,6 +18,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.workouttrackerapplication.DatabaseCreateWorkout;
 import com.example.workouttrackerapplication.MainActivity;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
@@ -45,6 +46,7 @@ public class WorkoutsFragment extends Fragment {
                 transaction.addToBackStack("Create workout transition");
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
+
             }
         });
 

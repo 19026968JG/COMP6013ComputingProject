@@ -1,6 +1,6 @@
 package com.example.workouttrackerapplication;
 
-public class WorkoutModel {
+public class ExerciseModel {
 
     private int id;
     private String exName;
@@ -9,26 +9,23 @@ public class WorkoutModel {
     private int numOfReps;
 
     //constructors
-    public WorkoutModel(String exName, int numOfSets, double weight, int numOfReps) {
+    public ExerciseModel(int id, String exName, int numOfSets, int numOfReps, double weight ) {
+        this.id = id;
         this.exName = exName;
         this.numOfSets = numOfSets;
         this.weight = weight;
         this.numOfReps = numOfReps;
     }
+    public ExerciseModel(){
 
-    //toString
-
-
+    }
     @Override
     public String toString() {
-        return "WorkoutModel{" +
-                ", exName='" + exName + '\'' +
-                ", numOfSets=" + numOfSets +
-                ", weight=" + weight +
-                ", numOfReps=" + numOfReps +
-                '}';
+        return  exName.toUpperCase() + '\n' +
+                "Sets=" + numOfSets  + " | Reps=" + numOfReps + " | Weight=" + weight;
     }
-
+    public int getId(){return id;}
+    public void setId(int id){this.id = id;}
     //getters and setters
     public String getExName() {
         return exName;
