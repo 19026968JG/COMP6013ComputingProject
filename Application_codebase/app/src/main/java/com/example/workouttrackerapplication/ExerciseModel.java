@@ -22,7 +22,7 @@ public class ExerciseModel {
     @Override
     public String toString() {
         return  exName.toUpperCase() + '\n' +
-                "Sets=" + numOfSets  + " | Reps=" + numOfReps + " | Weight=" + weight;
+                "Sets=" + numOfSets  + " | Reps=" + numOfReps + " | Weight=" + weight + "kg";
     }
     public int getId(){return id;}
     public void setId(int id){this.id = id;}

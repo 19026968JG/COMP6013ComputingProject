@@ -14,7 +14,7 @@ import java.util.List;
 public class DatabaseCreateWorkout extends SQLiteOpenHelper {
     public static final String CREATE_WORKOUT_TEMPLATE = "CREATE_WORKOUT_TEMPLATE";
     public static final String COLUMN_ID = "ID";
-    public static final String COLUMN_WORKOUT_NAME = "WORKOUT_NAME";
+    public static final String COLUMN_EXERCISE_NAME = "EXERCISE_NAME";
     public static final String COLUMN_REPS = "REPS";
     public static final String COLUMN_SETS = "SETS";
     public static final String COLUMN_WEIGHT = "WEIGHT";
@@ -29,7 +29,7 @@ public class DatabaseCreateWorkout extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CREATE_WORKOUT_TEMPLATE);
 
         String createTableStatement = "CREATE TABLE " + CREATE_WORKOUT_TEMPLATE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COLUMN_WORKOUT_NAME + " TEXT, " + COLUMN_REPS + " INT, " + COLUMN_SETS + " INT, "
+                + COLUMN_EXERCISE_NAME + " TEXT, " + COLUMN_REPS + " INT, " + COLUMN_SETS + " INT, "
                 + COLUMN_WEIGHT + " FLOAT )";
 
         db.execSQL(createTableStatement);
@@ -44,7 +44,7 @@ public class DatabaseCreateWorkout extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_WORKOUT_NAME, exerciseModel.getExName());
+        cv.put(COLUMN_EXERCISE_NAME, exerciseModel.getExName());
         cv.put(COLUMN_REPS, exerciseModel.getNumOfReps());
         cv.put(COLUMN_SETS, exerciseModel.getNumOfSets());
         cv.put(COLUMN_WEIGHT, exerciseModel.getWeight());
