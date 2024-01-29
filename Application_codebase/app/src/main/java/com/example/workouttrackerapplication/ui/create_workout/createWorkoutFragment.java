@@ -2,15 +2,11 @@ package com.example.workouttrackerapplication.ui.create_workout;
 import com.example.workouttrackerapplication.DatabaseCreateWorkout;
 import com.example.workouttrackerapplication.DatabaseWorkoutList;
 import com.example.workouttrackerapplication.ExerciseModel;
-import com.example.workouttrackerapplication.MainActivity;
-import com.example.workouttrackerapplication.WorkoutListModel;
 import com.example.workouttrackerapplication.databinding.AlertDialogueBinding;
 import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
 import com.example.workouttrackerapplication.R;
 
 import android.app.Dialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -18,30 +14,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.List;
-
-
 
 public class createWorkoutFragment extends Fragment {
 
     FragmentCreateWorkoutBinding binding;
-
+    DatabaseWorkoutList databaseWorkoutList;
     static ArrayAdapter createWorkoutArrayAdapter;
     DatabaseCreateWorkout databaseCreateWorkout;
     static ListView wList;
-
     static ArrayList<ExerciseModel> displayList ;
+
 
     public createWorkoutFragment() {
     }
@@ -69,19 +61,20 @@ public class createWorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FragmentManager manager = requireActivity().getSupportFragmentManager();
-                Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
-                databaseCreateWorkout.onCreate(databaseCreateWorkout.getWritableDatabase());
+                if (TextUtils.isEmpty(binding.workoutTitleInput.getText().toString())){
+                    Toast.makeText(getContext(), "Please Enter A Workout Title", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    FragmentManager manager = requireActivity().getSupportFragmentManager();
+                    Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
 
-                DatabaseWorkoutList databaseWorkoutList = new DatabaseWorkoutList(getContext());
-                ArrayList<String> createdWorkoutList = new ArrayList<>();
 
-                createdWorkoutList.add(databaseCreateWorkout.getAllExercises().toString());
+                    //TODO
+                    // fix this so it saves the
+                    // listview item to the database
 
-                databaseWorkoutList.addListItem(createdWorkoutList);
-
-                manager.popBackStack();
-
+                    manager.popBackStack();
+                }
 
             }
         });
