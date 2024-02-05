@@ -63,8 +63,9 @@
 
     <Button
         android:id="@+id/save_workout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_width="135dp"
+        android:layout_height="65dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/light_slate_grey"
@@ -72,23 +73,21 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/workout_title_input"
         app:layout_constraintTop_toBottomOf="@+id/page_title_create_workout" />
 
     <EditText
         android:id="@+id/workout_title_input"
-        android:layout_width="305dp"
-        android:layout_height="46dp"
+        android:layout_width="273dp"
+        android:layout_height="65dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:backgroundTint="#36454F"
         android:ems="10"
         android:hint="Workout Title"
         android:inputType="text"
         android:outlineProvider="none"
         android:textColorHint="#FFFFFF"
-        app:layout_constraintEnd_toStartOf="@+id/save_workout_button"
-        app:layout_constraintHorizontal_bias="0.085"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/page_title_create_workout" />
 
