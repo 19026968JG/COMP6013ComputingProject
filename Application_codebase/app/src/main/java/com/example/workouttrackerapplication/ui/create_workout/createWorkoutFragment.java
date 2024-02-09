@@ -1,9 +1,10 @@
 package com.example.workouttrackerapplication.ui.create_workout;
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.DatabaseWorkoutList;
 import com.example.workouttrackerapplication.ExerciseModel;
+import com.example.workouttrackerapplication.WorkoutModel;
 import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ import java.util.ArrayList;
 public class createWorkoutFragment extends Fragment {
 
     FragmentCreateWorkoutBinding binding;
-    DatabaseWorkoutList databaseWorkoutList;
     DatabaseSavedWorkouts databaseSavedWorkouts;
+    @SuppressLint("StaticFieldLeak")
     static ListView wList;
     static ArrayList<ExerciseModel> displayList ;
 
@@ -35,7 +37,7 @@ public class createWorkoutFragment extends Fragment {
 
         displayList = new ArrayList<>();
         wList = binding.workoutList;
-
+        databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
         //display current template on list
 
         binding.addExerciseButton.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +45,9 @@ public class createWorkoutFragment extends Fragment {
             public void onClick(View v) {
                 CreateExerciseDialogFragment dialogFragment = new CreateExerciseDialogFragment();
                 dialogFragment.show(requireActivity().getSupportFragmentManager(), "    add_ex_dialog");
+
+                ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, createWorkoutFragment.displayList);
+                wList.setAdapter(createWorkoutArrayAdapter);
             }
         });
 
@@ -67,6 +72,27 @@ public class createWorkoutFragment extends Fragment {
                     * listview item to the database
                     */
 
+                    WorkoutModel workoutModel = new WorkoutModel(
+                            -1,
+                            binding.workoutTitleInput.getText().toString());
+                    try {
+                        databaseSavedWorkouts.addNewWorkoutToParentTable(workoutModel);
+                    }catch (Exception e){
+                        Toast.makeText(getContext(),"Error Adding Workout", Toast.LENGTH_SHORT).show();
+                    }
+
+                    for(int i = 0; i < displayList.size(); i++) {
+
+                        ExerciseModel exerciseModel = new ExerciseModel(
+                                displayList.get(i).getId(),
+                                displayList.get(i).getExName(),
+                                displayList.get(i).getNumOfSets(),
+                                displayList.get(i).getNumOfReps(),
+                                displayList.get(i).getWeight());
+
+
+                           databaseSavedWorkouts.addExerciseToChildTable(exerciseModel, workoutModel.getWorkoutName());
+                    }
                     manager.popBackStack();
                 }
             }
@@ -74,7 +100,10 @@ public class createWorkoutFragment extends Fragment {
 
         return binding.getRoot();
     }
-
+    public void updateListView() {
+        ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, createWorkoutFragment.displayList);
+        wList.setAdapter(createWorkoutArrayAdapter);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
