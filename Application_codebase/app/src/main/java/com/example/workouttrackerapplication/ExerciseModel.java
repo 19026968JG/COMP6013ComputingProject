@@ -7,14 +7,16 @@ public class ExerciseModel {
     private int numOfSets;
     private double weight;
     private int numOfReps;
+    private int fk_id;
 
     //constructors
-    public ExerciseModel(int id, String exName, int numOfSets, int numOfReps, double weight ) {
+    public ExerciseModel(int id, String exName, int numOfSets, int numOfReps, double weight, int fk_id ) {
         this.id = id;
         this.exName = exName;
         this.numOfSets = numOfSets;
         this.weight = weight;
         this.numOfReps = numOfReps;
+        this.fk_id = fk_id;
     }
     public ExerciseModel(){
 

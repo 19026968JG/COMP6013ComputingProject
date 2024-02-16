@@ -58,7 +58,7 @@ public class createWorkoutFragment extends Fragment {
                 if (TextUtils.isEmpty(binding.workoutTitleInput.getText().toString())){
                     Toast.makeText(getContext(), "Please Enter A Workout Title", Toast.LENGTH_LONG).show();
                 }
-                if (wList.getCount() == 0){
+                else if (wList.getCount() == 0){
                     Toast.makeText(getContext(), "You Cannot Save an Empty Workout. \n" +
                             "Please Add One or More Exercises to Save", Toast.LENGTH_LONG).show();
                 }
@@ -76,22 +76,13 @@ public class createWorkoutFragment extends Fragment {
                             -1,
                             binding.workoutTitleInput.getText().toString());
                     try {
-                        databaseSavedWorkouts.addNewWorkoutToParentTable(workoutModel);
+                        databaseSavedWorkouts.addToWorkoutTable(workoutModel);
+                        for(int i = 0; i < displayList.size(); i++) {
+                            databaseSavedWorkouts.addToExerciseTable(displayList.get(i));
+                            databaseSavedWorkouts.addToExerciseValuesTable(displayList.get(i));
+                        }
                     }catch (Exception e){
                         Toast.makeText(getContext(),"Error Adding Workout", Toast.LENGTH_SHORT).show();
-                    }
-
-                    for(int i = 0; i < displayList.size(); i++) {
-
-                        ExerciseModel exerciseModel = new ExerciseModel(
-                                displayList.get(i).getId(),
-                                displayList.get(i).getExName(),
-                                displayList.get(i).getNumOfSets(),
-                                displayList.get(i).getNumOfReps(),
-                                displayList.get(i).getWeight());
-
-
-                           databaseSavedWorkouts.addExerciseToChildTable(exerciseModel, workoutModel.getWorkoutName());
                     }
                     manager.popBackStack();
                 }
