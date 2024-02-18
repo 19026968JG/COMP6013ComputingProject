@@ -44,7 +44,7 @@ public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
                     ExerciseModel exerciseModel;
 
                     try{
-                        exerciseModel = new ExerciseModel(-1,
+                        exerciseModel = new ExerciseModel(
                                 exName.getText().toString(),
                                 Integer.parseInt(sets.getText().toString()),
                                 Integer.parseInt(reps.getText().toString()),

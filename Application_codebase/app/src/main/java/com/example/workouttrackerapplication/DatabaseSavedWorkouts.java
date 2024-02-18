@@ -13,6 +13,8 @@ import java.util.List;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
+    private static final int DATABASE_VERSION = 1;
+
     // USER TABLE
     private static final String USER_TABLE_NAME = "USER_TABLE";
     private static final String USER_ID = "USER_ID"; // PRIMARY KEY
@@ -37,21 +39,17 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     private static final String SETS = "SETS";
     private static final String WEIGHT = "WEIGHT";
 
-    // FOREIGN KEYS
-    private static final String USER_FK_WORKOUTS_TABLE = "USER_ID";
-    private static final String EXERCISE_FK_EXERCISE_VALUES_TABLE = "EXERCISE_FK_EXERCISE_VALUES_TABLE";
-    private static final String WORKOUT_FK_EXERCISE_VALUES_TABLE = "WORKOUT_FK_EXERCISE_VALUES_TABLE";
-
     public DatabaseSavedWorkouts(@Nullable Context context) {
-        super(context, "create_workout_db.db", null, 1);
+        super(context, "create_workout_db.db", null, DATABASE_VERSION);
     }
+
     @Override
     public void onConfigure(SQLiteDatabase db){
         db.setForeignKeyConstraintsEnabled(true);
     }
-
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         // CLEAR DB IF TABLES ALREADY EXIST
         db.execSQL("DROP TABLE IF EXISTS " + EXERCISES_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + WORKOUTS_TABLE_NAME);
@@ -67,51 +65,73 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         // CREATE WORKOUTS TABLE
         String createWorkoutsTable = "CREATE TABLE " + WORKOUTS_TABLE_NAME + "("
                 + WORKOUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + WORKOUT_NAME + " TEXT, "
-                + USER_FK_WORKOUTS_TABLE + " INTEGER, "
-                + " FOREIGN KEY ( " + USER_FK_WORKOUTS_TABLE + " ) REFERENCES " + USER_TABLE_NAME + "(" + USER_ID + ")); ";
+                + WORKOUT_NAME + " TEXT NOT NULL, "
+                + USER_ID + " INTEGER, "
+                + " FOREIGN KEY ( " + USER_ID + " ) REFERENCES " + USER_TABLE_NAME + "(" + USER_ID + ")); ";
 
         // CREATE EXERCISES TABLE
         String createExercisesTable = "CREATE TABLE " + EXERCISES_TABLE_NAME + "("
                 + EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + EXERCISE_NAME + " TEXT " + ")" ;
+                + EXERCISE_NAME + " TEXT NOT NULL " + ")" ;
 
         //CREATE WORKOUT EXERCISES TABLE
         String createExerciseValuesTable = "CREATE TABLE " + EXERCISE_VALUES_TABLE_NAME + "("
-                + EXERCISE_FK_EXERCISE_VALUES_TABLE + " INTEGER, "
-                + WORKOUT_FK_EXERCISE_VALUES_TABLE + " INTEGER, "
+                + EXERCISE_ID + " INTEGER NOT NULL, "
+                + WORKOUT_ID + " INTEGER NOT NULL, "
                 + SETS + " INTEGER, "
                 + REPS + " INTEGER, "
                 + WEIGHT + " DOUBLE, "
-                + " FOREIGN KEY ( " + EXERCISE_FK_EXERCISE_VALUES_TABLE + " ) REFERENCES " + EXERCISES_TABLE_NAME + "(" + EXERCISE_ID + "), "
-                + " FOREIGN KEY ( " + WORKOUT_FK_EXERCISE_VALUES_TABLE + " ) REFERENCES " + WORKOUTS_TABLE_NAME + "(" + WORKOUT_ID + ")"+ ")";
+                + " PRIMARY KEY (" + EXERCISE_ID + ", " + WORKOUT_ID + "),"
+                + " FOREIGN KEY ( " + EXERCISE_ID + " ) REFERENCES " + EXERCISES_TABLE_NAME + "(" + EXERCISE_ID + "), "
+                + " FOREIGN KEY ( " + WORKOUT_ID + " ) REFERENCES " + WORKOUTS_TABLE_NAME + "(" + WORKOUT_ID + ")"+ ")";
 
         // EXECUTE STATEMENTS
         db.execSQL(createUsersTable);
         db.execSQL(createWorkoutsTable);
         db.execSQL(createExercisesTable);
         db.execSQL(createExerciseValuesTable);
+        db.execSQL("PRAGMA foreign_keys=ON;");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        db.execSQL("DROP TABLE IF EXISTS " + EXERCISES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKOUTS_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_VALUES_TABLE_NAME);
+
+        onCreate(db);
     }
 
-    public boolean addToUsersTable() {
-        return true;
+    public boolean addToUsersTable(String firstName, String lastName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_FIRST_NAME, firstName);
+        cv.put(USER_LAST_NAME, lastName);
+
+        long insert = db.insert(USER_TABLE_NAME, null, cv);
+
+        return insert != -1;
     }
     public boolean addToExerciseValuesTable(ExerciseModel exerciseModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
+        int exerciseId = getExerciseId();
+        int workoutId = getWorkoutId();
+
+        // PUT FOREIGN KEY IN EXERCISE VALUES TABLE
+        cv.put(EXERCISE_ID, exerciseId);
+        cv.put(WORKOUT_ID, workoutId);
+        // PUT REST OF DATA IN TABLE
         cv.put(REPS, exerciseModel.getNumOfReps());
         cv.put(SETS, exerciseModel.getNumOfSets());
         cv.put(WEIGHT, exerciseModel.getWeight());
 
-        // PUT FOREIGN KEY IN WORKOUT EXERCISE TABLE
-        cv.put(EXERCISE_FK_EXERCISE_VALUES_TABLE, EXERCISE_ID);
-        cv.put(WORKOUT_FK_EXERCISE_VALUES_TABLE, WORKOUT_ID);
+
 
         long insert = db.insert(EXERCISE_VALUES_TABLE_NAME, null, cv);
 
@@ -127,46 +147,83 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
         return insert != -1;
     }
-    public boolean addToWorkoutTable(WorkoutModel workoutModel){
+    public boolean addToWorkoutTable(String workoutName){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(WORKOUT_NAME, workoutModel.getWorkoutName());
+        int userId = getUserId();
+
+        cv.put(USER_ID, userId);
+        cv.put(WORKOUT_NAME, workoutName);
 
         long insert = db.insert(WORKOUTS_TABLE_NAME, null, cv);
 
         return insert != -1;
     }
 
+    private int getUserId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + USER_ID + ") FROM " + USER_TABLE_NAME, null);
+        int userId = -1;
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(0);
+        }
+        cursor.close();
+        return userId;
+    }
+
+    // Method to get the latest exercise ID from the EXERCISES_TABLE
+    private int getExerciseId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + EXERCISE_ID + ") FROM " + EXERCISES_TABLE_NAME, null);
+        int exerciseId = -1;
+        if (cursor.moveToFirst()) {
+            exerciseId = cursor.getInt(0);
+        }
+        cursor.close();
+        return exerciseId;
+    }
+
+    // Method to get the latest workout ID from the WORKOUTS_TABLE
+    private int getWorkoutId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_ID + ") FROM " + WORKOUTS_TABLE_NAME, null);
+        int workoutId = -1;
+        if (cursor.moveToFirst()) {
+            workoutId = cursor.getInt(0);
+        }
+        cursor.close();
+        return workoutId;
+    }
+
     public List<ExerciseModel> getAllExercises(){
-      List<ExerciseModel> returnList = new ArrayList<>();
+        List<ExerciseModel> returnList = new ArrayList<>();
 
-      String queryString = "SELECT * FROM " + EXERCISES_TABLE_NAME + " JOIN " + EXERCISE_VALUES_TABLE_NAME;
+        String queryString = "SELECT * FROM " + EXERCISES_TABLE_NAME + " JOIN " + EXERCISE_VALUES_TABLE_NAME;
 
-      SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-      Cursor cursor = db.rawQuery(queryString, null);
-      if (cursor.moveToFirst()) {
-          //loop through cursor and create new objects. put them into the return list
-        do{
-            int exerciseID = cursor.getInt(0);
-            String exerciseName = cursor.getString(1);
-            int sets = cursor.getInt(2);
-            int reps = cursor.getInt(3);
-            double weight = cursor.getDouble(4);
-            int fk_id = cursor.getInt(5);
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            //loop through cursor and create new objects. put them into the return list
+            do{
 
-            ExerciseModel newExercise = new ExerciseModel(exerciseID, exerciseName, sets, reps, weight, fk_id);
-            returnList.add(newExercise);
+                String exerciseName = cursor.getString(0);
+                int sets = cursor.getInt(1);
+                int reps = cursor.getInt(2);
+                double weight = cursor.getDouble(3);
 
-        }while(cursor.moveToNext());
+                ExerciseModel newExercise = new ExerciseModel(exerciseName, sets, reps, weight);
+                returnList.add(newExercise);
 
-      }else{
+            }while(cursor.moveToNext());
+
+        }else{
             //failure do not add
-      }
-      cursor.close();
-      db.close();
-      return returnList;
+        }
+        cursor.close();
+        db.close();
+        return returnList;
     }
 
 }
