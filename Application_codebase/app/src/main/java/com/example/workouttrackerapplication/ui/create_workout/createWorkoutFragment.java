@@ -72,26 +72,17 @@ public class createWorkoutFragment extends Fragment {
                     * listview item to the database
                     */
 
-                    WorkoutModel workoutModel = new WorkoutModel(
-                            -1,
-                            binding.workoutTitleInput.getText().toString());
                     try {
-                        databaseSavedWorkouts.addNewWorkoutToParentTable(workoutModel);
+                        /* REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION */
+                        databaseSavedWorkouts.addToUsersTable("nothing", "nobody");
+                        databaseSavedWorkouts.addToWorkoutTable(binding.workoutTitleInput.getText().toString());
+                        for(int i=0; i<displayList.size();i++) {
+                            databaseSavedWorkouts.addToExerciseTable(displayList.get(i));
+                            databaseSavedWorkouts.addToExerciseValuesTable(displayList.get(i));
+                        }
+
                     }catch (Exception e){
                         Toast.makeText(getContext(),"Error Adding Workout", Toast.LENGTH_SHORT).show();
-                    }
-
-                    for(int i = 0; i < displayList.size(); i++) {
-
-                        ExerciseModel exerciseModel = new ExerciseModel(
-                                displayList.get(i).getId(),
-                                displayList.get(i).getExName(),
-                                displayList.get(i).getNumOfSets(),
-                                displayList.get(i).getNumOfReps(),
-                                displayList.get(i).getWeight());
-
-
-                           databaseSavedWorkouts.addExerciseToChildTable(exerciseModel, workoutModel.getWorkoutName());
                     }
                     manager.popBackStack();
                 }

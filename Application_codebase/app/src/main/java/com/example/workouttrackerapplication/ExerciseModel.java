@@ -2,15 +2,14 @@ package com.example.workouttrackerapplication;
 
 public class ExerciseModel {
 
-    private int id;
     private String exName;
     private int numOfSets;
     private double weight;
     private int numOfReps;
 
     //constructors
-    public ExerciseModel(int id, String exName, int numOfSets, int numOfReps, double weight ) {
-        this.id = id;
+    public ExerciseModel(String exName, int numOfSets, int numOfReps, double weight) {
+
         this.exName = exName;
         this.numOfSets = numOfSets;
         this.weight = weight;
@@ -24,8 +23,6 @@ public class ExerciseModel {
         return  exName.toUpperCase() + '\n' +
                 "Sets=" + numOfSets  + " | Reps=" + numOfReps + " | Weight=" + weight + "kg";
     }
-    public int getId(){return id;}
-    public void setId(int id){this.id = id;}
     //getters and setters
     public String getExName() {
         return exName;
@@ -58,4 +55,5 @@ public class ExerciseModel {
     public void setNumOfReps(int numOfReps) {
         this.numOfReps = numOfReps;
     }
+
 }
