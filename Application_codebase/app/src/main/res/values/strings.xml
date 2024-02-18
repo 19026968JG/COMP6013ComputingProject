@@ -23,4 +23,5 @@
     <string name="weight">Weight (kg)</string>
     <string name="ex_name">Exercise Name</string>
     <string name="add_exercise_title">Add Exercise</string>
+
 </resources>
