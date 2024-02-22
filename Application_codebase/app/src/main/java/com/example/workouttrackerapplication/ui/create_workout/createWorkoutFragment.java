@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,9 +29,10 @@ public class createWorkoutFragment extends Fragment {
     FragmentCreateWorkoutBinding binding;
     DatabaseSavedWorkouts databaseSavedWorkouts;
 
-    @SuppressLint("StaticFieldLeak")
     static ListView wList;
     static ArrayList<ExerciseModel> displayList ;
+
+    ArrayAdapter createWorkoutArrayAdapter;
 
     public createWorkoutFragment() {
     }
@@ -39,12 +41,10 @@ public class createWorkoutFragment extends Fragment {
         binding = FragmentCreateWorkoutBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
 
+
         displayList = new ArrayList<>();
         wList = binding.workoutList;
         databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
-
-        //display current template on list
-        updateListView();
 
         binding.addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +52,7 @@ public class createWorkoutFragment extends Fragment {
                 CreateExerciseDialogFragment dialogFragment = new CreateExerciseDialogFragment();
                 dialogFragment.show(requireActivity().getSupportFragmentManager(), "    add_ex_dialog");
             }
+
         });
 
         binding.saveWorkoutButton.setOnClickListener(new View.OnClickListener(){
@@ -70,8 +71,11 @@ public class createWorkoutFragment extends Fragment {
                     Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
 
                     try {
-                        // TODO
-                        /* REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION */
+                        /* TODO
+                        *
+                        *  REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
+                        *
+                        */
                         databaseSavedWorkouts.addToUsersTable("nothing", "nobody");
                         databaseSavedWorkouts.addToWorkoutTable(binding.workoutTitleInput.getText().toString());
                         for(int i=0; i<displayList.size();i++) {
@@ -98,20 +102,18 @@ public class createWorkoutFragment extends Fragment {
                         .setPositiveButton("Yes", (dialog,which) -> {
 
                             displayList.remove(position);
-                            updateListView();
+                            createWorkoutArrayAdapter.notifyDataSetChanged();
 
                         }).setNegativeButton("No", (dialog,which)-> {
                                 dialog.dismiss();
                         }).create().show();
             }
         });
-
         return binding.getRoot();
     }
 
-    public void updateListView(){
-        ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,
-                createWorkoutFragment.displayList);
+    public static void checkForUpdates(){
+       ArrayAdapter createWorkoutArrayAdapter = new ArrayAdapter<>(wList.getContext(), android.R.layout.simple_list_item_1, createWorkoutFragment.displayList);
         wList.setAdapter(createWorkoutArrayAdapter);
     }
 
@@ -119,5 +121,6 @@ public class createWorkoutFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        System.gc();
     }
 }

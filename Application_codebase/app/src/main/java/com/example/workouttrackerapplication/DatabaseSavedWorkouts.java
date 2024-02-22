@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -196,34 +197,19 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutId;
     }
 
-    public List<ExerciseModel> getAllExercises(){
-        List<ExerciseModel> returnList = new ArrayList<>();
-
-        String queryString = "SELECT * FROM " + EXERCISES_TABLE_NAME + " JOIN " + EXERCISE_VALUES_TABLE_NAME;
-
+    public Cursor displayWorkouts() {
         SQLiteDatabase db = this.getReadableDatabase();
+        String sqlQuery = " SELECT " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + ","
+                + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + ","
+                + EXERCISE_VALUES_TABLE_NAME + "." + SETS
+                + " FROM " + WORKOUTS_TABLE_NAME
+                + " INNER JOIN "
+                + EXERCISE_VALUES_TABLE_NAME
+                + " ON " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID
+                + " INNER JOIN "
+                + EXERCISES_TABLE_NAME
+                + " ON " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID + " = " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID;
 
-        Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            //loop through cursor and create new objects. put them into the return list
-            do{
-
-                String exerciseName = cursor.getString(0);
-                int sets = cursor.getInt(1);
-                int reps = cursor.getInt(2);
-                double weight = cursor.getDouble(3);
-
-                ExerciseModel newExercise = new ExerciseModel(exerciseName, sets, reps, weight);
-                returnList.add(newExercise);
-
-            }while(cursor.moveToNext());
-
-        }else{
-            //failure do not add
-        }
-        cursor.close();
-        db.close();
-        return returnList;
+        return db.rawQuery(sqlQuery, null);
     }
-
 }
