@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.workouttrackerapplication.ui.home.HomeFragment"
-
         tools:layout="@layout/fragment_home" >
 
         <action
@@ -24,7 +23,6 @@
         android:name="com.example.workouttrackerapplication.ui.history.HistoryFragment"
         android:label="@string/title_history"
         tools:layout="@layout/fragment_history" >
-
     </fragment>
 
     <fragment
@@ -32,7 +30,6 @@
         android:name="com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment"
         android:label="@string/title_workouts"
         tools:layout="@layout/fragment_workouts" >
-
         <action
             android:id="@+id/action_navigation_workouts_to_create_workout"
             app:destination="@id/navigation_create_workout" />
@@ -42,8 +39,6 @@
         android:id="@+id/navigation_create_workout"
         android:name="com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment"
         android:label="@string/title_create_workout"
-        tools:layout="@layout/fragment_create_workout"/>
-
-
-
+        tools:layout="@layout/fragment_create_workout">
+    </fragment>
 </navigation>
