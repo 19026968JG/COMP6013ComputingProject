@@ -1,49 +1,33 @@
 package com.example.workouttrackerapplication;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class WorkoutListModel {
 
-    private int id;
     private String workoutName;
-    private List<ExerciseModel> exerciseModel;
+    private ArrayList<String> exercises;
+    private ArrayList<String> sets;
 
-    public WorkoutListModel(int id, String workoutName, List<ExerciseModel> exerciseModel) {
-        this.id = id;
-        this.exerciseModel = exerciseModel;
-        this.workoutName =workoutName;
+    public WorkoutListModel(String workoutName, ArrayList<String> exercises, ArrayList<String> sets) {
+
+        this.exercises = exercises;
+        this.workoutName = workoutName;
+        this.sets = sets;
     }
 
     public WorkoutListModel(){
-
     }
 
     public String toString() {
-        return  workoutName.toUpperCase() + '\n' +
-                exerciseModel;
+        StringBuilder returnList = new StringBuilder(workoutName.toUpperCase() + "\n");
+
+        for(int i=0;i<exercises.size();i++) {
+           returnList.append(exercises.get(i).toString());
+           returnList.append(sets.get(i).toString());
+        }
+
+        return  returnList.toString();
+
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getWorkoutName() {
-        return workoutName;
-    }
-
-    public void setWorkoutName(String workoutName) {
-        this.workoutName = workoutName;
-    }
-
-    public List<ExerciseModel> getExerciseModel() {
-        return exerciseModel;
-    }
-
-    public void setExerciseModel(List<ExerciseModel> exerciseModel) {
-        this.exerciseModel = exerciseModel;
-    }
 }
