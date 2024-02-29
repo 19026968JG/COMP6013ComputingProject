@@ -1,16 +1,16 @@
 package com.example.workouttrackerapplication;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
@@ -197,11 +197,24 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutId;
     }
 
-    public Cursor displayWorkouts() {
+    public String getWorkoutName() {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_NAME +") FROM " + WORKOUTS_TABLE_NAME, null);
+
+        String workoutName = "";
+        if (cursor.moveToFirst()) {
+            workoutName = cursor.getString(0);
+        }
+        cursor.close();
+        return workoutName;
+    }
+
+    public Map<String, String> displayWorkoutsForWorkoutList() {
+        Map<String, String> workoutListDisplay = new HashMap<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
         String sqlQuery = " SELECT " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + ","
-                + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + ","
-                + EXERCISE_VALUES_TABLE_NAME + "." + SETS
+                + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME
                 + " FROM " + WORKOUTS_TABLE_NAME
                 + " INNER JOIN "
                 + EXERCISE_VALUES_TABLE_NAME
@@ -210,6 +223,17 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + EXERCISES_TABLE_NAME
                 + " ON " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID + " = " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID;
 
-        return db.rawQuery(sqlQuery, null);
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String workoutName = cursor.getString(cursor.getColumnIndex(WORKOUT_NAME));
+                @SuppressLint("Range") String otherValue = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
+                workoutListDisplay.put(workoutName, otherValue);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return workoutListDisplay;
     }
 }

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
@@ -25,7 +24,7 @@ public class WorkoutsFragment extends Fragment {
 
     public ListView savedWorkoutsList;
     private FragmentWorkoutsBinding binding;
-    private ArrayList<ArrayList<String>> workoutsList;
+    private ArrayList<String> workoutsList;
     private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,28 +57,23 @@ public class WorkoutsFragment extends Fragment {
 
         return root;
     }
-
+    private ArrayList<String> getAvailableWorkouts() {
+        return null;
+    }
     private void updateListDisplay() {
-        Cursor cursor = db.displayWorkouts();
         ArrayList<String> subDisplayList = new ArrayList<>();
-
-            while (cursor.moveToNext()){
-               subDisplayList.add(cursor.getString(cursor.getColumnIndexOrThrow("WORKOUT_NAME")));
-               subDisplayList.add(cursor.getString(cursor.getColumnIndexOrThrow("EXERCISE_NAME")));
-               subDisplayList.add(cursor.getString(cursor.getColumnIndexOrThrow("SETS")));
 
             /* *
             *
             * TODO BUILD THE WORKOUT LIST MODEL FROM THE DATABASE THEN OUTPUT TO THE LIST
+            * get name then for the length of the row? maybe don't need to display sets
             *
             * */
 
-            }
-            workoutsList.add(subDisplayList);
-            for (int i=0;i<workoutsList.size();i++) {
-                ArrayAdapter<String> workoutListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, workoutsList.get(i));
-                savedWorkoutsList.setAdapter(workoutListAdapter);
-            }
+            subDisplayList.add(db.getWorkoutName());
+
+        ArrayAdapter<String> workoutListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, subDisplayList);
+        savedWorkoutsList.setAdapter(workoutListAdapter);
     }
 
     @Override
