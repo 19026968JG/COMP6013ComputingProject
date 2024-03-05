@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class createWorkoutFragment extends Fragment {
 
-    FragmentCreateWorkoutBinding binding;
+    private FragmentCreateWorkoutBinding binding;
     DatabaseSavedWorkouts databaseSavedWorkouts;
 
     static ListView wList;
@@ -71,13 +71,7 @@ public class createWorkoutFragment extends Fragment {
                     FragmentManager manager = requireActivity().getSupportFragmentManager();
                     Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
                     try {
-                        /* TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
-                        *
-                        *  TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
-                        *
-                        *  TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
-                        */
-                        databaseSavedWorkouts.addToUsersTable("nothing", "nobody");
+
                         databaseSavedWorkouts.addToWorkoutTable(binding.workoutTitleInput.getText().toString());
                         for(int i=0; i<displayList.size();i++) {
                             databaseSavedWorkouts.addToExerciseTable(displayList.get(i));

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,11 +15,12 @@ import java.util.ArrayList;
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "WORKOUT_DATABASE";
 
     // USER TABLE
     private static final String USER_TABLE_NAME = "USER_TABLE";
     private static final String USER_ID = "USER_ID"; // PRIMARY KEY
-    private static final String USER_FIRST_NAME = "USER_FIRST_NAME";
+    private static final String USERNAME = "USERNAME";
     private static final String USER_LAST_NAME = "USER_LAST_NAME";
 
 
@@ -59,8 +61,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         // CREATE USERS TABLE
         String createUsersTable = "CREATE TABLE " + USER_TABLE_NAME + "("
                 + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + USER_FIRST_NAME + " TEXT, "
-                + USER_LAST_NAME + " TEXT " + ")";
+                + USERNAME + " TEXT " + ")";
 
         // CREATE WORKOUTS TABLE
         String createWorkoutsTable = "CREATE TABLE " + WORKOUTS_TABLE_NAME + "("
@@ -105,16 +106,25 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addToUsersTable(String firstName, String lastName) {
+    public boolean addToUsersTable(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(USER_FIRST_NAME, firstName);
-        cv.put(USER_LAST_NAME, lastName);
+        cv.put(USERNAME, username);
 
         long insert = db.insert(USER_TABLE_NAME, null, cv);
 
         return insert != -1;
+    }
+
+    public boolean checkDatabaseExists(Context context) {
+        String path = context.getDatabasePath("create_workout_db.db").getPath();
+        return new java.io.File(path).exists();
+    }
+
+    public boolean checkEmptyUsersTable() {
+        SQLiteDatabase db = getReadableDatabase();
+        return DatabaseUtils.queryNumEntries(db, USER_TABLE_NAME) == 0;
     }
     public boolean addToExerciseValuesTable(ExerciseModel exerciseModel) {
         SQLiteDatabase db = this.getWritableDatabase();

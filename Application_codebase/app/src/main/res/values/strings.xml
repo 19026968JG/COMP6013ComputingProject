@@ -24,4 +24,11 @@
     <string name="ex_name">Exercise Name</string>
     <string name="add_exercise_title">Add Exercise</string>
 
+    <!-- User Login -->
+    <string name="user_login_welcome">Welcome! &#xA; As a First Time User, &#xA; Please Choose a Username"</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="username_visible">Username (Visible on LeaderBoard)</string>
+    <string name="username">Username</string>
+    <string name="save_details">Save Username</string>
 </resources>

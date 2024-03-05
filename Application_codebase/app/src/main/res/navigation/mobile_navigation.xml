@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_workouts"
             app:destination="@id/navigation_workouts" />
+        <action
+            android:id="@+id/action_navigation_home_to_userLoginFragment"
+            app:destination="@id/userLoginFragment" />
     </fragment>
 
     <fragment
@@ -35,7 +38,12 @@
 
         <action
             android:id="@+id/action_navigation_workouts_to_create_workout"
-            app:destination="@id/navigation_create_workout" />
+            app:destination="@id/navigation_create_workout"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popUpTo="@id/navigation_create_workout"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -43,7 +51,10 @@
         android:name="com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment"
         android:label="@string/title_create_workout"
         tools:layout="@layout/fragment_create_workout"/>
-
+    <fragment
+        android:id="@+id/userLoginFragment"
+        android:name="com.example.workouttrackerapplication.ui.user.UserLoginFragment"
+        android:label="UserLoginFragment" />
 
 
 </navigation>
