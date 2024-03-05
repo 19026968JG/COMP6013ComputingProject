@@ -9,8 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
@@ -186,7 +185,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     }
 
     // Method to get the latest workout ID from the WORKOUTS_TABLE
-    private int getWorkoutId() {
+    public int getWorkoutId() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_ID + ") FROM " + WORKOUTS_TABLE_NAME, null);
         int workoutId = -1;
@@ -197,6 +196,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutId;
     }
 
+    // Method to get the latest workout NAME from the WORKOUTS_TABLE
     public String getWorkoutName() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_NAME +") FROM " + WORKOUTS_TABLE_NAME, null);
@@ -209,31 +209,23 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutName;
     }
 
-    public Map<String, String> displayWorkoutsForWorkoutList() {
-        Map<String, String> workoutListDisplay = new HashMap<>();
+    public ArrayList<String> getAllWorkoutNames() {
+        ArrayList<String> workoutListDisplay = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery = " SELECT " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + ","
-                + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME
-                + " FROM " + WORKOUTS_TABLE_NAME
-                + " INNER JOIN "
-                + EXERCISE_VALUES_TABLE_NAME
-                + " ON " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID
-                + " INNER JOIN "
-                + EXERCISES_TABLE_NAME
-                + " ON " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID + " = " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID;
+
+        String sqlQuery = " SELECT " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + " FROM " + WORKOUTS_TABLE_NAME;
 
         Cursor cursor = db.rawQuery(sqlQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String workoutName = cursor.getString(cursor.getColumnIndex(WORKOUT_NAME));
-                @SuppressLint("Range") String otherValue = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
-                workoutListDisplay.put(workoutName, otherValue);
+                workoutListDisplay.add(workoutName);
             } while (cursor.moveToNext());
+
         }
 
-        cursor.close();
         return workoutListDisplay;
     }
 }

@@ -26,6 +26,8 @@
         android:id="@id/saved_workouts_list"
         android:layout_width="413dp"
         android:layout_height="664dp"
+        android:divider="@color/white"
+        android:dividerHeight="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"

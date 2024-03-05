@@ -1,6 +1,5 @@
 package com.example.workouttrackerapplication.ui.workouts;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +21,9 @@ import java.util.ArrayList;
 
 public class WorkoutsFragment extends Fragment {
 
-    public ListView savedWorkoutsList;
+    private ListView savedWorkoutsList;
     private FragmentWorkoutsBinding binding;
     private ArrayList<String> workoutsList;
-    private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,8 +33,9 @@ public class WorkoutsFragment extends Fragment {
         View root = binding.getRoot();
 
         savedWorkoutsList = binding.savedWorkoutsList;
-        db = new DatabaseSavedWorkouts(getContext());
+        DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
         workoutsList = new ArrayList<>();
+        workoutsList = db.getAllWorkoutNames();
 
         updateListDisplay();
 
@@ -54,25 +53,11 @@ public class WorkoutsFragment extends Fragment {
 
             }
         });
-
         return root;
     }
-    private ArrayList<String> getAvailableWorkouts() {
-        return null;
-    }
+
     private void updateListDisplay() {
-        ArrayList<String> subDisplayList = new ArrayList<>();
-
-            /* *
-            *
-            * TODO BUILD THE WORKOUT LIST MODEL FROM THE DATABASE THEN OUTPUT TO THE LIST
-            * get name then for the length of the row? maybe don't need to display sets
-            *
-            * */
-
-            subDisplayList.add(db.getWorkoutName());
-
-        ArrayAdapter<String> workoutListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, subDisplayList);
+        ArrayAdapter<String> workoutListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, workoutsList);
         savedWorkoutsList.setAdapter(workoutListAdapter);
     }
 

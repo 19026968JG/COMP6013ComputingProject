@@ -3,6 +3,7 @@ import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.WorkoutModel;
 import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -69,12 +70,12 @@ public class createWorkoutFragment extends Fragment {
                 else {
                     FragmentManager manager = requireActivity().getSupportFragmentManager();
                     Toast.makeText(requireActivity().getApplicationContext(), "Workout Saved", Toast.LENGTH_SHORT).show();
-
                     try {
-                        /* TODO
+                        /* TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
                         *
-                        *  REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
+                        *  TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
                         *
+                        *  TODO REMEMBER TO DELETE THIS WHEN CREATING THE USER LOGIN SECTION
                         */
                         databaseSavedWorkouts.addToUsersTable("nothing", "nobody");
                         databaseSavedWorkouts.addToWorkoutTable(binding.workoutTitleInput.getText().toString());
