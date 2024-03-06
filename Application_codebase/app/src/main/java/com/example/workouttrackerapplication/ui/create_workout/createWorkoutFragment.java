@@ -31,7 +31,7 @@ public class createWorkoutFragment extends Fragment {
     DatabaseSavedWorkouts databaseSavedWorkouts;
 
     static ListView wList;
-    static ArrayList<ExerciseModel> displayList ;
+    static ArrayList<ExerciseModel> displayList;
 
     ArrayAdapter createWorkoutArrayAdapter;
 
