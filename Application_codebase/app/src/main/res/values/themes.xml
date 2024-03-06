@@ -18,18 +18,13 @@
         <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
         <item name="colorAccent">?attr/colorSecondaryVariant</item>
         <item name="textAppearanceButton">@color/white</item>
-        <item name="android:button">?attr/colorPrimaryVariant</item>
 
     </style>
-    <style name="Theme.WorkoutTrackerApplication.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:actionBarSize">0dp</item>
+    <style name="AlertDialog.AppCompat.Light." parent="Theme.AppCompat.Dialog">
+        <item name="android:buttonBarPositiveButtonStyle">@color/white</item>
+        <item name="android:buttonBarNegativeButtonStyle">@color/white</item>
+
     </style>
-
-
-    <style name="bottomNavBarStyle" parent="Widget.Design.BottomNavigationView">
     <!--TODO  CREATE ALTERNATE STYLE FOR BOTTOM NAV BAR -->
 
-    </style>
 </resources>

@@ -1,24 +1,26 @@
 package com.example.workouttrackerapplication;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "WORKOUT_DATABASE";
 
     // USER TABLE
     private static final String USER_TABLE_NAME = "USER_TABLE";
     private static final String USER_ID = "USER_ID"; // PRIMARY KEY
-    private static final String USER_FIRST_NAME = "USER_FIRST_NAME";
+    private static final String USERNAME = "USERNAME";
     private static final String USER_LAST_NAME = "USER_LAST_NAME";
 
 
@@ -59,8 +61,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         // CREATE USERS TABLE
         String createUsersTable = "CREATE TABLE " + USER_TABLE_NAME + "("
                 + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + USER_FIRST_NAME + " TEXT, "
-                + USER_LAST_NAME + " TEXT " + ")";
+                + USERNAME + " TEXT " + ")";
 
         // CREATE WORKOUTS TABLE
         String createWorkoutsTable = "CREATE TABLE " + WORKOUTS_TABLE_NAME + "("
@@ -105,16 +106,25 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addToUsersTable(String firstName, String lastName) {
+    public boolean addToUsersTable(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(USER_FIRST_NAME, firstName);
-        cv.put(USER_LAST_NAME, lastName);
+        cv.put(USERNAME, username);
 
         long insert = db.insert(USER_TABLE_NAME, null, cv);
 
         return insert != -1;
+    }
+
+    public boolean checkDatabaseExists(Context context) {
+        String path = context.getDatabasePath("create_workout_db.db").getPath();
+        return new java.io.File(path).exists();
+    }
+
+    public boolean checkEmptyUsersTable() {
+        SQLiteDatabase db = getReadableDatabase();
+        return DatabaseUtils.queryNumEntries(db, USER_TABLE_NAME) == 0;
     }
     public boolean addToExerciseValuesTable(ExerciseModel exerciseModel) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -185,7 +195,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     }
 
     // Method to get the latest workout ID from the WORKOUTS_TABLE
-    private int getWorkoutId() {
+    public int getWorkoutId() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_ID + ") FROM " + WORKOUTS_TABLE_NAME, null);
         int workoutId = -1;
@@ -196,34 +206,36 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutId;
     }
 
-    public List<ExerciseModel> getAllExercises(){
-        List<ExerciseModel> returnList = new ArrayList<>();
-
-        String queryString = "SELECT * FROM " + EXERCISES_TABLE_NAME + " JOIN " + EXERCISE_VALUES_TABLE_NAME;
-
+    // Method to get the latest workout NAME from the WORKOUTS_TABLE
+    public String getWorkoutName() {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_NAME +") FROM " + WORKOUTS_TABLE_NAME, null);
 
-        Cursor cursor = db.rawQuery(queryString, null);
+        String workoutName = "";
         if (cursor.moveToFirst()) {
-            //loop through cursor and create new objects. put them into the return list
-            do{
-
-                String exerciseName = cursor.getString(0);
-                int sets = cursor.getInt(1);
-                int reps = cursor.getInt(2);
-                double weight = cursor.getDouble(3);
-
-                ExerciseModel newExercise = new ExerciseModel(exerciseName, sets, reps, weight);
-                returnList.add(newExercise);
-
-            }while(cursor.moveToNext());
-
-        }else{
-            //failure do not add
+            workoutName = cursor.getString(0);
         }
         cursor.close();
-        db.close();
-        return returnList;
+        return workoutName;
     }
 
+    public ArrayList<String> getAllWorkoutNames() {
+        ArrayList<String> workoutListDisplay = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        String sqlQuery = " SELECT " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + " FROM " + WORKOUTS_TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(sqlQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String workoutName = cursor.getString(cursor.getColumnIndex(WORKOUT_NAME));
+                workoutListDisplay.add(workoutName);
+            } while (cursor.moveToNext());
+
+        }
+
+        return workoutListDisplay;
+    }
 }

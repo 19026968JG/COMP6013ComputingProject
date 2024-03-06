@@ -23,9 +23,11 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ListView
-        android:id="@id/_dynamic"
+        android:id="@id/saved_workouts_list"
         android:layout_width="413dp"
         android:layout_height="664dp"
+        android:divider="@color/white"
+        android:dividerHeight="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.454"
@@ -48,7 +50,7 @@
         android:textStyle="bold"
         android:typeface="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/_dynamic"
+        app:layout_constraintBottom_toTopOf="@+id/saved_workouts_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
