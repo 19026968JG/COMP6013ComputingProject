@@ -1,18 +1,13 @@
 package com.example.workouttrackerapplication.ui.create_workout;
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.ExerciseModel;
-import com.example.workouttrackerapplication.WorkoutModel;
 import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
-import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 

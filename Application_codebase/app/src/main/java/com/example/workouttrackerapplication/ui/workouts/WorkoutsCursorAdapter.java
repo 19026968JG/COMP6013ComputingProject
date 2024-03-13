@@ -29,6 +29,5 @@ public class WorkoutsCursorAdapter extends CursorAdapter {
         String sets = cursor.getString(cursor.getColumnIndexOrThrow("SETS"));
         String reps = cursor.getString(cursor.getColumnIndexOrThrow("REPS"));
         String weight = cursor.getString(cursor.getColumnIndexOrThrow("WEIGHT"));
-        ;
     }
 }

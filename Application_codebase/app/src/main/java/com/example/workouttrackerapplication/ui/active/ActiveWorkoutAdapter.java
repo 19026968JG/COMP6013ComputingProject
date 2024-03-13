@@ -1,5 +1,7 @@
 package com.example.workouttrackerapplication.ui.active;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,36 +9,50 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.workouttrackerapplication.ActiveWorkoutModel;
 import com.example.workouttrackerapplication.R;
+import com.example.workouttrackerapplication.SetModel;
 
-public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdapter.ViewHolder> {
+import java.util.ArrayList;
 
-    private String[] localDataSet;
+public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdapter.MyViewHolder> {
+    Context context;
+    ArrayList<ActiveWorkoutModel> activeWorkoutModels;
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            textView = (TextView) itemView.findViewById(R.id.workout_title);
-        }
+    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutModel> activeWorkoutModels) {
+        this.context =context;
+        this.activeWorkoutModels = activeWorkoutModels;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public ActiveWorkoutAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater =LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.active_workout_row_header,parent,false);
+        return new ActiveWorkoutAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        holder.exName.setText(activeWorkoutModels.get(position).getExerciseName());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return activeWorkoutModels.size();
+    }
+
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        TextView exName;
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            exName = itemView.findViewById(R.id.exerciseRowHeader);
+
+
+        }
     }
 
 }

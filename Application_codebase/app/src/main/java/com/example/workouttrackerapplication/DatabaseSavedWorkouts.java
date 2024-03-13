@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
@@ -237,5 +238,24 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         }
 
         return workoutListDisplay;
+    }
+
+    public String[] getExerciseNames() {
+        ArrayList<String> exerciseNames = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlQuery = " SELECT " + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + " FROM " + EXERCISES_TABLE_NAME
+                + " JOIN " + WORKOUTS_TABLE_NAME + " ON " + EXERCISES_TABLE_NAME + "." + WORKOUT_ID
+                + "=" + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID;
+
+        Cursor cursor = db.rawQuery(sqlQuery,null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
+                exerciseNames.add(exerciseName);
+            } while (cursor.moveToNext());
+        }
+        return Arrays.copyOf(exerciseNames.toArray(), exerciseNames.size(), String[].class);
     }
 }
