@@ -1,5 +1,6 @@
 package com.example.workouttrackerapplication.ui.active;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ public class ActiveWorkoutFragment extends Fragment {
         ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exerciseList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         return root;
     }

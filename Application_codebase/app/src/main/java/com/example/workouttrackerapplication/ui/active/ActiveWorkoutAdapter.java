@@ -1,6 +1,7 @@
 package com.example.workouttrackerapplication.ui.active;
 
 import android.content.Context;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.exName.setText(activeWorkoutModels.get(position).getExerciseName());
+
     }
 
     @Override

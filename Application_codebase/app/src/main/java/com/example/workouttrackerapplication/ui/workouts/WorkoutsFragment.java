@@ -1,9 +1,11 @@
 package com.example.workouttrackerapplication.ui.workouts;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -15,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
+import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
 
 import java.util.ArrayList;
@@ -53,6 +56,32 @@ public class WorkoutsFragment extends Fragment {
 
             }
         });
+
+        binding.savedWorkoutsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                new AlertDialog.Builder(requireContext())
+
+                    .setTitle("Start " + workoutsList.get(position).toString() + "?")
+                    .setPositiveButton("Yes", (dialog,which) -> {
+
+                        FragmentManager manager = requireActivity().getSupportFragmentManager();
+                        FragmentTransaction transaction = manager.beginTransaction();
+
+                        transaction.add(R.id.workouts_page, new ActiveWorkoutFragment());
+                        transaction.addToBackStack("Active Workout Begin Transaction");
+                        transaction.commit();
+
+                    })
+                        .setNegativeButton("No", (dialog,which)-> {
+                        dialog.dismiss();
+                    })
+                        .create()
+                        .show();
+            }
+        });
+
         return root;
     }
 

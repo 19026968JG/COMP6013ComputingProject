@@ -37,11 +37,13 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.greetingTextHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
+
+
         try {
             DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
 
             // check if there is a user already and load login if not
-            if (db.checkDatabaseExists(requireContext()) && db.checkEmptyUsersTable()) {
+            if (db.checkEmptyUsersTable()) {
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
 
