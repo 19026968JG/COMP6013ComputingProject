@@ -7,7 +7,7 @@
     <string name="title_history">History</string>
     <string name="title_create_workout">Create Workout</string>
 
-    <string name="homepage_greeting">WELCOME! Lets get a Workout Going!</string>
+    <string name="homepage_greeting">WELCOME!&#xA;Lets get a Workout Going!</string>
     <string name="workouts_completed">you have completed NULL workouts this month</string>
     <string name="workouts_placeholder">Workouts Page</string>
 
@@ -23,6 +23,10 @@
     <string name="weight">Weight (kg)</string>
     <string name="ex_name">Exercise Name</string>
     <string name="add_exercise_title">Add Exercise</string>
+
+    <!-- Workouts -->
+    <string name="workouts_title">Workouts</string>
+    <string name="FAB_description">add new exercise</string>
 
     <!-- User Login -->
     <string name="user_login_welcome">Welcome! &#xA; As a First Time User, &#xA; Please Choose a Username"</string>
