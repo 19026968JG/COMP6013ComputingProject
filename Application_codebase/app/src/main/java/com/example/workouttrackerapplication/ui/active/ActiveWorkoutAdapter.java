@@ -17,8 +17,8 @@ import com.example.workouttrackerapplication.SetModel;
 import java.util.ArrayList;
 
 public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdapter.MyViewHolder> {
-    Context context;
-    ArrayList<ActiveWorkoutModel> activeWorkoutModels;
+    private Context context;
+    private ArrayList<ActiveWorkoutModel> activeWorkoutModels;
 
     public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutModel> activeWorkoutModels) {
         this.context =context;

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -236,26 +237,29 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
 
         }
-
+        cursor.close();
         return workoutListDisplay;
     }
 
-    public String[] getExerciseNames() {
+    public String[] getExerciseNames(int workoutId) {
         ArrayList<String> exerciseNames = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery = " SELECT " + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + " FROM " + EXERCISES_TABLE_NAME
-                + " JOIN " + WORKOUTS_TABLE_NAME + " ON " + EXERCISES_TABLE_NAME + "." + WORKOUT_ID
-                + "=" + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID;
+        String sqlQuery = " SELECT " + EXERCISE_NAME + " FROM " + EXERCISES_TABLE_NAME
+                + " INNER JOIN " + EXERCISE_VALUES_TABLE_NAME + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID + " = " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID
+                + " INNER JOIN " + WORKOUTS_TABLE_NAME + " ON " + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID + "=" + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID
+                + " WHERE " + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID + "=" + workoutId;
 
         Cursor cursor = db.rawQuery(sqlQuery,null);
 
         if(cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
+               @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
                 exerciseNames.add(exerciseName);
             } while (cursor.moveToNext());
         }
+        cursor.close();
+        Log.d("check database output", Arrays.toString(Arrays.copyOf(exerciseNames.toArray(), exerciseNames.size(), String[].class)));
         return Arrays.copyOf(exerciseNames.toArray(), exerciseNames.size(), String[].class);
     }
 }
