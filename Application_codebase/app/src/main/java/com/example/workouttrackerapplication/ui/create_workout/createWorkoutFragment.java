@@ -23,7 +23,6 @@ public class createWorkoutFragment extends Fragment {
 
     private FragmentCreateWorkoutBinding binding;
     DatabaseSavedWorkouts databaseSavedWorkouts;
-
     static ListView wList;
     static ArrayList<ExerciseModel> displayList ;
 

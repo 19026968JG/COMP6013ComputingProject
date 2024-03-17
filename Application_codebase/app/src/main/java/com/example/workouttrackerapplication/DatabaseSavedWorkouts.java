@@ -7,12 +7,10 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
@@ -153,7 +151,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(EXERCISE_NAME, exerciseModel.getExName());
+        cv.put(EXERCISE_NAME, exerciseModel.getExName().toUpperCase());
 
         long insert = db.insert(EXERCISES_TABLE_NAME, null, cv);
 
@@ -258,11 +256,14 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutListDisplay;
     }
 
-    public ArrayList<ActiveWorkoutExerciseNameModel> getAllExerciseNamesForWorkout(int workoutId) {
+    public ArrayList<ActiveWorkoutExerciseNameModel> getAllExercisesForWorkout(int workoutId) {
         ArrayList<ActiveWorkoutExerciseNameModel> exercises = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String sqlQuery = "SELECT " + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME
+        String sqlQuery = "SELECT " + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + ","
+                + EXERCISE_VALUES_TABLE_NAME + "." + SETS + ", "
+                + EXERCISE_VALUES_TABLE_NAME + "." + WEIGHT + ", "
+                + EXERCISE_VALUES_TABLE_NAME + "." + REPS
                 + " FROM " + EXERCISES_TABLE_NAME
                 + " INNER JOIN " + EXERCISE_VALUES_TABLE_NAME
                 + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID
@@ -275,21 +276,18 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
-                exercises.add(new ActiveWorkoutExerciseNameModel(exerciseName));
+               @SuppressLint("Range") int sets = cursor.getInt(cursor.getColumnIndex(SETS));
+               @SuppressLint("Range") String weight = cursor.getString(cursor.getColumnIndex(WEIGHT));
+               @SuppressLint("Range") String reps = cursor.getString(cursor.getColumnIndex(REPS));
+                exercises.add(new ActiveWorkoutExerciseNameModel(exerciseName,sets,weight,reps));
 
             } while (cursor.moveToNext());
         }
         cursor.close();
-
-        for (ActiveWorkoutExerciseNameModel exercise : exercises) {
-            Log.d("Exercise Name", exercise.getExerciseName());
-        }
-
-
         return exercises;
     }
     @SuppressLint("Range")
-    public ArrayList<Integer> getAllSetsForWorkout(int workoutId) {
+    public ArrayList<Integer> getNumberOfSets(int workoutId) {
         ArrayList<Integer> setsList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -299,8 +297,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID
                 + " = " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID
                 + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + workoutId;
-
-
+        
         Cursor cursor = db.rawQuery(sqlQuery,null);
 
         if(cursor.moveToFirst()) {

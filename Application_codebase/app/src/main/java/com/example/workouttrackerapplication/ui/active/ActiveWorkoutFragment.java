@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.workouttrackerapplication.ActiveWorkoutExerciseNameModel;
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.WorkoutNameViewModel;
 import com.example.workouttrackerapplication.databinding.ActiveWorkoutBinding;
 
@@ -26,12 +28,11 @@ public class ActiveWorkoutFragment extends Fragment {
     private ActiveWorkoutBinding binding;
     private RecyclerView recyclerView;
     private ArrayList<ActiveWorkoutExerciseNameModel> exerciseList;
-    private ArrayList<Integer> setsList;
-    private Map<Float,Integer> weightRepsList;
     private DatabaseSavedWorkouts db;
     private RecyclerView.LayoutManager layoutManager;
     private int workoutId;
     private WorkoutNameViewModel workoutNameViewModel;
+
     public View onCreateView (@NonNull LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
 
@@ -42,29 +43,20 @@ public class ActiveWorkoutFragment extends Fragment {
         binding = ActiveWorkoutBinding.inflate(inflater, container,false);
         View root = binding.getRoot();
 
-
-
         recyclerView = binding.recyclerView;
         exerciseList = new ArrayList<>();
-        setsList = new ArrayList<>();
 
-        populateWorkoutView();
         setAdapter();
 
         return root;
     }
 
     private void setAdapter() {
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExerciseNamesForWorkout(workoutId));
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-    }
-
-    private void populateWorkoutView() {
-        //TODO
-        // maybe delete method
     }
 
 }
