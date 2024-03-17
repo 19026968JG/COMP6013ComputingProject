@@ -15,7 +15,7 @@
     <string name="add_new_workout_button_description">Add new Workout Template</string>
     <string name="title_activity_create_workout_screen">createWorkoutScreen</string>
 
-    <!-- Alert Dialogue -->
+    <!-- Alert Dialogue/Active Workout -->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="sets">Sets</string>

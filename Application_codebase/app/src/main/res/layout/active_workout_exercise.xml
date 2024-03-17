@@ -22,7 +22,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/exerciseRowHeader"
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="exercise"
+                android:text="@string/ex_name"
                 android:textColor="@color/white"
                 android:textSize="26dp"
                 android:textStyle="bold"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="65dp"
                 android:layout_marginEnd="65dp"
-                android:text="@string/reps"
+                android:text="@string/weight"
                 android:textColor="@color/white"
                 android:textSize="12dp"
                 app:layout_constraintEnd_toStartOf="@+id/completedHeader"
@@ -85,6 +85,64 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/set_row"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/light_slate_grey"
+                android:backgroundTint="@color/light_slate_grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exerciseRowHeader">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/workout_row_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/set_row_reps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="41dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="TextView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/set_row_weight" />
+
+                    <TextView
+                        android:id="@+id/set_row_weight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="79dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="TextView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/completed_checkbox" />
+
+                    <TextView
+                        android:id="@+id/setNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="26dp"
+                        android:layout_marginBottom="6dp"
+                        android:text="TextView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/set_row_reps" />
+
+                    <CheckBox
+                        android:id="@+id/completed_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="29dp"
+                        android:layout_marginBottom="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

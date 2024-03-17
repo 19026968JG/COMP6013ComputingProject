@@ -14,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.MainActivity;
 import com.example.workouttrackerapplication.R;
+import com.example.workouttrackerapplication.WorkoutNameViewModel;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
@@ -29,6 +31,7 @@ public class WorkoutsFragment extends Fragment {
     private ListView savedWorkoutsList;
     private FragmentWorkoutsBinding binding;
     private ArrayList<String> workoutsList;
+    private WorkoutNameViewModel workoutNameViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,17 +66,19 @@ public class WorkoutsFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Object clickedItem = parent.getItemAtPosition(position);
+
                 new AlertDialog.Builder(requireContext())
 
                     .setTitle("Start " + workoutsList.get(position) + "?")
                     .setPositiveButton("Yes", (dialog,which) -> {
 
-                        FragmentManager manager = requireActivity().getSupportFragmentManager();
+                        FragmentManager manager = getChildFragmentManager();
                         FragmentTransaction transaction = manager.beginTransaction();
 
-                        Bundle wId = new Bundle();
-                        wId.putInt("database_id", db.getWorkoutId());
-                        manager.setFragmentResult("pass_database_id", wId);
+                        workoutNameViewModel = new ViewModelProvider(requireActivity()).get(WorkoutNameViewModel.class);
+                        workoutNameViewModel.updateWorkoutName(clickedItem.toString());
 
                         transaction.replace(R.id.workouts_page, new ActiveWorkoutFragment());
                         transaction.addToBackStack("Active Workout Begin Transaction");

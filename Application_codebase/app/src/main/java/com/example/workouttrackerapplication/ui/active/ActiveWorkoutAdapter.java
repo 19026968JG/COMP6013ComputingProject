@@ -1,7 +1,6 @@
 package com.example.workouttrackerapplication.ui.active;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workouttrackerapplication.ActiveWorkoutModel;
+import com.example.workouttrackerapplication.ActiveWorkoutExerciseNameModel;
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.SetModel;
 
 import java.util.ArrayList;
 
 public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList<ActiveWorkoutModel> activeWorkoutModels;
+    private ArrayList<ActiveWorkoutExerciseNameModel> activeWorkoutModels;
 
-    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutModel> activeWorkoutModels) {
+    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseNameModel> activeWorkoutModels) {
         this.context =context;
         this.activeWorkoutModels = activeWorkoutModels;
     }
@@ -29,7 +27,7 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdap
     @Override
     public ActiveWorkoutAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater =LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.active_workout_row_header,parent,false);
+        View view = inflater.inflate((R.layout.active_workout_exercise),parent,false);
         return new ActiveWorkoutAdapter.MyViewHolder(view);
     }
 
@@ -47,11 +45,17 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView exName;
+        private TextView exName;
+        private TextView reps;
+        private TextView weight;
+        private int sets;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             exName = itemView.findViewById(R.id.exerciseRowHeader);
+            reps = itemView.findViewById(R.id.active_workout_display_reps);
+            weight = itemView.findViewById(R.id.active_workout_display_weight);
 
 
         }
