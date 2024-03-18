@@ -14,20 +14,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.R;
+import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutNameViewModel;
-import com.example.workouttrackerapplication.databinding.ActiveWorkoutBinding;
+import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 
 public class ActiveWorkoutFragment extends Fragment {
 
-    private ActiveWorkoutBinding binding;
+    private
+    ActiveWorkoutParentBinding binding;
     private RecyclerView recyclerViewExercise;
     private RecyclerView recyclerViewSet;
     private RecyclerView.LayoutManager layoutManager;
-    private ConstraintLayout nestedSetsLayout;
-    private ArrayList<ActiveWorkoutExerciseNameModel> exerciseList;
     private DatabaseSavedWorkouts db;
     private int workoutId;
     private WorkoutNameViewModel workoutNameViewModel;
@@ -39,15 +41,14 @@ public class ActiveWorkoutFragment extends Fragment {
         db = new DatabaseSavedWorkouts(getContext());
         workoutId = db.getWorkoutIdFromName(workoutNameViewModel.getWorkoutName());
 
-        binding = ActiveWorkoutBinding.inflate(inflater, container,false);
+        binding = ActiveWorkoutParentBinding.inflate(inflater, container,false);
         View root = binding.getRoot();
+
+        BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
+        navBar.setVisibility(View.GONE);
 
         recyclerViewExercise = binding.recyclerView;
         recyclerViewSet = binding.recyclerView;
-        exerciseList = new ArrayList<>();
-
-        ArrayList<ActiveWorkoutExerciseNameModel> testListForSets = new ArrayList<>();
-        testListForSets.add(new ActiveWorkoutExerciseNameModel("fart", 5,"100","15"));
 
         addExercisesToView();
 
@@ -55,24 +56,27 @@ public class ActiveWorkoutFragment extends Fragment {
     }
 
     private void addExercisesToView() {
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
+
+        ArrayList<ActiveWorkoutExerciseNameModel> exercises = new ArrayList<>();
+        ArrayList<DisplayExerciseObject> exercisesForAdapter = new ArrayList<>();
+
+        exercises = db.getAllExercisesForWorkout(workoutId);
+
+        for (int i = 0; i < exercises.size(); i++) {
+            String tempName = exercises.get(i).getExerciseName();
+            ArrayList<TupleRepsWeight> repsWeight = new ArrayList<>();
+
+            for (int j = 0; j < exercises.get(i).getSets(); j++) {
+                repsWeight.add(new TupleRepsWeight(exercises.get(i).getReps(),exercises.get(i).getWeight()));
+            }
+            exercisesForAdapter.add(new DisplayExerciseObject(tempName,repsWeight));
+        }
+
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercisesForAdapter);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewExercise.setLayoutManager(layoutManager);
         recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());
         recyclerViewExercise.setAdapter(adapter);
 
-//        NestedActiveWorkoutAdapter nestedActiveWorkoutAdapter = new NestedActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
-//        layoutManager = new LinearLayoutManager(getContext());
-//        recyclerViewSet.setLayoutManager(layoutManager);
-//        recyclerViewSet.setAdapter(nestedActiveWorkoutAdapter);
-
-    }
-
-    private void addSetsToView() {
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerViewExercise.setLayoutManager(layoutManager);
-        recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());
-        recyclerViewExercise.setAdapter(adapter);
     }
 }
