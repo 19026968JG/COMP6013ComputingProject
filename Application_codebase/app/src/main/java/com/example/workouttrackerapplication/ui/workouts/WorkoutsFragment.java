@@ -10,16 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.MainActivity;
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.WorkoutNameViewModel;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;

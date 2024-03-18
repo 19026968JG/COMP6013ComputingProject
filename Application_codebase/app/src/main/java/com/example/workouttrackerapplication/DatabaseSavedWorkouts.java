@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseNameModel;
+
 import java.util.ArrayList;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {

@@ -11,7 +11,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workouttrackerapplication.ActiveWorkoutExerciseNameModel;
 import com.example.workouttrackerapplication.R;
 
 import java.util.ArrayList;

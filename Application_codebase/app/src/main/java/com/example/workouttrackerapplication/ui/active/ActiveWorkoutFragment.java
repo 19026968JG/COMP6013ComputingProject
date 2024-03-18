@@ -6,21 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.workouttrackerapplication.ActiveWorkoutExerciseNameModel;
+
 import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.WorkoutNameViewModel;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutNameViewModel;
 import com.example.workouttrackerapplication.databinding.ActiveWorkoutBinding;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
 public class ActiveWorkoutFragment extends Fragment {

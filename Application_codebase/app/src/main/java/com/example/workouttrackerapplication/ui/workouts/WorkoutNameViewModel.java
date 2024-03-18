@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication;
+package com.example.workouttrackerapplication.ui.workouts;
 
 import androidx.lifecycle.ViewModel;
 

@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication;
+package com.example.workouttrackerapplication.ui.active;
 
 public class ActiveWorkoutWeightRepsModel {
     private float weight;
