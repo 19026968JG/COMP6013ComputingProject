@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -22,10 +23,12 @@ import java.util.ArrayList;
 public class ActiveWorkoutFragment extends Fragment {
 
     private ActiveWorkoutBinding binding;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewExercise;
+    private RecyclerView recyclerViewSet;
+    private RecyclerView.LayoutManager layoutManager;
+    private ConstraintLayout nestedSetsLayout;
     private ArrayList<ActiveWorkoutExerciseNameModel> exerciseList;
     private DatabaseSavedWorkouts db;
-    private RecyclerView.LayoutManager layoutManager;
     private int workoutId;
     private WorkoutNameViewModel workoutNameViewModel;
 
@@ -39,20 +42,37 @@ public class ActiveWorkoutFragment extends Fragment {
         binding = ActiveWorkoutBinding.inflate(inflater, container,false);
         View root = binding.getRoot();
 
-        recyclerView = binding.recyclerView;
+        recyclerViewExercise = binding.recyclerView;
+        recyclerViewSet = binding.recyclerView;
         exerciseList = new ArrayList<>();
 
-        setAdapter();
+        ArrayList<ActiveWorkoutExerciseNameModel> testListForSets = new ArrayList<>();
+        testListForSets.add(new ActiveWorkoutExerciseNameModel("fart", 5,"100","15"));
+
+        addExercisesToView();
 
         return root;
     }
 
-    private void setAdapter() {
+    private void addExercisesToView() {
         ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
         layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerViewExercise.setLayoutManager(layoutManager);
+        recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewExercise.setAdapter(adapter);
+
+//        NestedActiveWorkoutAdapter nestedActiveWorkoutAdapter = new NestedActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
+//        layoutManager = new LinearLayoutManager(getContext());
+//        recyclerViewSet.setLayoutManager(layoutManager);
+//        recyclerViewSet.setAdapter(nestedActiveWorkoutAdapter);
+
     }
 
+    private void addSetsToView() {
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), db.getAllExercisesForWorkout(workoutId));
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewExercise.setLayoutManager(layoutManager);
+        recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewExercise.setAdapter(adapter);
+    }
 }

@@ -41,41 +41,9 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdap
 
         // Set exercise name
         holder.exName.setText(model.getExerciseName());
+        holder.reps.setText(model.getReps());
+        holder.weight.setText(model.getWeight());
 
-        // Remove existing nested views
-        holder.nestedViewOfSets.removeAllViews();
-
-        // Add nested views dynamically
-        for (int i = 0; i < model.getSets(); i++) {
-            TextView nestedViewReps = new TextView(context);
-            nestedViewReps.setId(View.generateViewId()); // Generate a unique ID for the view
-            nestedViewReps.setText("Reps: " + model.getReps());
-
-            TextView nestedViewWeight = new TextView(context);
-            nestedViewWeight.setId(View.generateViewId()); // Generate a unique ID for the view
-            nestedViewWeight.setText("Weight: " + model.getWeight());
-
-            // Add the nested views to the ConstraintLayout
-            holder.nestedViewOfSets.addView(nestedViewReps);
-            holder.nestedViewOfSets.addView(nestedViewWeight);
-
-            // Set constraints for nested views
-            ConstraintSet constraintSet = new ConstraintSet();
-            constraintSet.clone(holder.nestedViewOfSets);
-
-            // Set constraints for nestedViewReps
-            constraintSet.connect(nestedViewReps.getId(), ConstraintSet.TOP, holder.nestedViewOfSets.getId(), ConstraintSet.TOP);
-            constraintSet.connect(nestedViewReps.getId(), ConstraintSet.LEFT, holder.nestedViewOfSets.getId(), ConstraintSet.LEFT);
-            constraintSet.connect(nestedViewReps.getId(), ConstraintSet.RIGHT, holder.nestedViewOfSets.getId(), ConstraintSet.RIGHT);
-
-            // Set constraints for nestedViewWeight
-            constraintSet.connect(nestedViewWeight.getId(), ConstraintSet.TOP, nestedViewReps.getId(), ConstraintSet.BOTTOM);
-            constraintSet.connect(nestedViewWeight.getId(), ConstraintSet.LEFT, holder.nestedViewOfSets.getId(), ConstraintSet.LEFT);
-            constraintSet.connect(nestedViewWeight.getId(), ConstraintSet.RIGHT, holder.nestedViewOfSets.getId(), ConstraintSet.RIGHT);
-
-            // Apply the constraints
-            constraintSet.applyTo(holder.nestedViewOfSets);
-        }
     }
 
     @Override
@@ -88,16 +56,14 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<ActiveWorkoutAdap
         private TextView exName;
         private TextView reps;
         private TextView weight;
-        private ConstraintLayout nestedViewOfSets;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             exName = itemView.findViewById(R.id.exerciseRowHeader);
             reps = itemView.findViewById(R.id.set_row_reps);
-            weight = itemView.findViewById(R.id.set_row_weight);
-            // each row of sets
-            nestedViewOfSets = itemView.findViewById(R.id.nested_workout_row_layout);
+            weight =itemView.findViewById(R.id.set_row_weight);
+
         }
     }
 
