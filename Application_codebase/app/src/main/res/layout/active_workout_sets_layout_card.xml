@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hapticFeedbackEnabled="true">
+    android:hapticFeedbackEnabled="true"
+    android:background="@color/dark_slate_grey">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="3dp"
+        android:background="@color/slate_grey"
         app:cardCornerRadius="16dp"
         app:cardElevation="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -23,7 +25,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_slate_grey">
+            android:background="@color/slate_grey">
 
             <TextView
                 android:id="@+id/set_row_reps"
@@ -33,7 +35,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="26dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/dark_slate_grey"
+                android:background="@color/slate_grey"
                 android:bufferType="normal"
                 android:text="TextView"
                 android:textColor="@color/white"
@@ -49,15 +51,15 @@
                 android:layout_width="58dp"
                 android:layout_height="0dp"
 
-                android:layout_marginStart="50dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="16dp"
+
                 android:backgroundTint="@color/white"
-                android:buttonTint="@color/light_slate_grey"
                 android:checked="false"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/set_row_weight"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -69,7 +71,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/dark_slate_grey"
+                android:background="@color/slate_grey"
                 android:text="TextView"
                 android:textColor="@color/white"
                 android:textSize="20sp"
@@ -87,7 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/dark_slate_grey"
+                android:background="@color/slate_grey"
                 android:text="TextView"
                 android:textColor="@color/white"
                 android:textSize="20sp"

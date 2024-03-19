@@ -45,6 +45,7 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
 
         holder.reps.setText(numOfReps);
         holder.weight.setText(amountOfWeight);
+        holder.setNum.setText(Integer.valueOf(position+1).toString());
     }
 
     @Override
