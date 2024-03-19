@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication;
+package com.example.workouttrackerapplication.databases;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseNameModel;
 
 import java.util.ArrayList;
@@ -26,22 +27,28 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     private static final String USER_LAST_NAME = "USER_LAST_NAME";
 
 
-    // WORKOUTS TABLE
+    // WORKOUTS TABLE VALUES
     private static final String WORKOUTS_TABLE_NAME = "WORKOUTS_TABLE";
     private static final String WORKOUT_ID = "WORKOUT_ID"; // PRIMARY KEY
     private static final String WORKOUT_NAME = "WORKOUT_NAME";
 
 
-    // EXERCISE TABLE
+    // EXERCISE TABLE VALUES
     private static final String EXERCISES_TABLE_NAME = "EXERCISES_TABLE";
     private static final String EXERCISE_ID = "EXERCISES_ID"; // PRIMARY KEY
     private static final String EXERCISE_NAME = "EXERCISE_NAME";
 
-    // WORKOUT EXERCISE TABLE
+    // WORKOUT EXERCISE TABLE VALUES
     private static final String EXERCISE_VALUES_TABLE_NAME = "EXERCISE_VALUES_TABLE";
     private static final String REPS = "REPS";
     private static final String SETS = "SETS";
     private static final String WEIGHT = "WEIGHT";
+
+    // WORKOUT HISTORY TABLE VALUES
+    private static final String WORKOUT_HISTORY_TABLE_NAME = "WORKOUT_HISTORY_TABLE";
+    private static final String WORKOUT_HISTORY_ID = "WORKOUT_HISTORY_ID"; // PRIMARY KEY
+    private static final String DATE_TIME = "DATE_TIME";
+
 
     public DatabaseSavedWorkouts(@Nullable Context context) {
         super(context, "create_workout_db.db", null, DATABASE_VERSION);
@@ -59,6 +66,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + WORKOUTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_VALUES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_HISTORY_TABLE_NAME);
 
         // CREATE USERS TABLE
         String createUsersTable = "CREATE TABLE " + USER_TABLE_NAME + "("

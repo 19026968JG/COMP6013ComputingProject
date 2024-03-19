@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.databinding.ActivityMainBinding;
 
+import java.sql.Connection;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,27 +46,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-         // TODO HIDE BOTTOM NAV BAR FOR CREATE WORKOUT AND ACTIVE WORKOUT FRAGMENTS
-
-//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-//            @Override
-//            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-//                int destinationId = navDestination.getId();
-//                Log.d("dest changed log", "destination changed to " + destinationId);
-//
-//                // Check if the destination is one where you want to hide the bottom navigation
-//                if (destinationId == R.id.active_workout_fragment || destinationId == R.id.create_workout_page) {
-//                    Log.d("hide view", "view hidden");
-//                    binding.navView.setVisibility(View.GONE);
-//                } else {
-//                    Log.d("show view", "view showing");
-//                    binding.navView.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
     }
 
-    public void bottomNavVisibility(int visibility) {
-        binding.navView.setVisibility(visibility);
-    }
+//    public void bottomNavVisibility(int visibility) {
+//        binding.navView.setVisibility(visibility);
+//    }
 }

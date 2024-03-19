@@ -1,23 +1,25 @@
 package com.example.workouttrackerapplication.ui.active;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutNameViewModel;
-import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -52,8 +54,21 @@ public class ActiveWorkoutFragment extends Fragment {
 
         addExercisesToView();
 
+        OnBackPressedDispatcher onBackPressedDispatcher = new OnBackPressedDispatcher();
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(false);
+                Toast.makeText(getContext(), "Exiting", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+
         return root;
     }
+
+
 
     private void addExercisesToView() {
 

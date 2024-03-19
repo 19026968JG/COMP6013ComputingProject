@@ -14,10 +14,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
-import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentHomeBinding;
-import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
 import com.example.workouttrackerapplication.ui.user.UserLoginFragment;
 
 public class HomeFragment extends Fragment {

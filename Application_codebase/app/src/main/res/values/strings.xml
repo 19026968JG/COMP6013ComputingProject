@@ -39,4 +39,6 @@
 
     <!-- Active workout -->
     <string name="active_save_workout_button">Save Workout</string>
+    <string name="active_cancel_workout_button">Cancel Workout</string>
+
 </resources>

@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/navigation_create_workout"
-        android:name="com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment"
+        android:name="com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment"
         android:label="@string/title_create_workout"
         tools:layout="@layout/fragment_create_workout"/>
     <fragment

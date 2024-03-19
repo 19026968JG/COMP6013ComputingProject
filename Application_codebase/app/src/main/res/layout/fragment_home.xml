@@ -2,47 +2,68 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/home_fragment"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/greeting_text_home"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView4"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:ems="10"
-        android:text="@string/homepage_greeting"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:padding="16dp"
-        android:background="@color/dark_slate_grey"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/greeting_text_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_slate_grey"
+                android:ems="10"
+                android:padding="16dp"
+                android:text="@string/homepage_greeting"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/editTextText2"
         android:layout_width="319dp"
         android:layout_height="54dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginEnd="46dp"
+        android:layout_marginBottom="153dp"
         android:ems="10"
         android:text="@string/workouts_completed"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="97dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextText2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/greeting_text_home" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

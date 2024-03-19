@@ -9,8 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.MainActivity;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.UserLoginBinding;
 
 public class UserLoginFragment extends Fragment {

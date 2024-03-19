@@ -15,11 +15,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.workouttrackerapplication.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
-import com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment;
+import com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment;
 
 import java.util.ArrayList;
 
@@ -51,8 +51,8 @@ public class WorkoutsFragment extends Fragment {
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
 
-                transaction.add(R.id.workouts_page, new createWorkoutFragment());
-                transaction.addToBackStack("Create workout transition");
+               transaction.add(R.id.workouts_page,  CreateWorkoutFragment.class,null);
+
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
 
