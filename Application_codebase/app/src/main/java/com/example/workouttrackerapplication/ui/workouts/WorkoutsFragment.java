@@ -20,6 +20,7 @@ import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,8 @@ public class WorkoutsFragment extends Fragment {
         workoutsList = new ArrayList<>();
         workoutsList = db.getAllWorkoutNames();
 
+        BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
+
         updateListDisplay();
 
         // Floating Action Button Functionality
@@ -52,7 +55,8 @@ public class WorkoutsFragment extends Fragment {
                 FragmentTransaction transaction = manager.beginTransaction();
 
                transaction.add(R.id.workouts_page,  CreateWorkoutFragment.class,null);
-
+                binding.cardView2.setVisibility(View.GONE);
+                navBar.setVisibility(View.GONE);
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
 
@@ -80,6 +84,8 @@ public class WorkoutsFragment extends Fragment {
                         transaction.replace(R.id.workouts_page, new ActiveWorkoutFragment());
                         transaction.addToBackStack("Active Workout Begin Transaction");
                         binding.fabAddWorkoutButton.hide();
+                        binding.cardView2.setVisibility(View.GONE);
+                        navBar.setVisibility(View.GONE);
                         transaction.commit();
                     })
                         .setNegativeButton("No", (dialog,which)-> {

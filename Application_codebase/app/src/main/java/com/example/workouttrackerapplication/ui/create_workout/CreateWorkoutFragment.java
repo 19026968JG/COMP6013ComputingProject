@@ -3,15 +3,20 @@ import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.databinding.FragmentCreateWorkoutBinding;
+import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -51,7 +56,6 @@ public class CreateWorkoutFragment extends Fragment {
         wList.addFooterView(footer);
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
-        navBar.setVisibility(View.GONE);
 
         binding.addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +119,20 @@ public class CreateWorkoutFragment extends Fragment {
                         }).setNegativeButton("No", (dialog,which)-> {
                                 dialog.dismiss();
                         }).create().show();
+            }
+        });
+
+        binding.cancelBuildButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FloatingActionButton floatingActionButton = requireActivity().findViewById(R.id.fab_add_workout_button);
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+
+                floatingActionButton.show();
+                navBar.setVisibility(View.VISIBLE);
+
+                manager.popBackStack();
             }
         });
 
