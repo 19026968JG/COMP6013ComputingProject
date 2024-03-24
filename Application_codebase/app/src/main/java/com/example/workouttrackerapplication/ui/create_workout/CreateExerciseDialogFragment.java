@@ -37,7 +37,7 @@ public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
                                 exName.getText().toString(),
                                 Integer.parseInt(sets.getText().toString()),
                                 Integer.parseInt(reps.getText().toString()),
-                                Integer.parseInt(weight.getText().toString()));
+                                Double.parseDouble(weight.getText().toString()));
                         CreateWorkoutFragment.displayList.add(exerciseModel);
                     }
                     catch (Exception e){
