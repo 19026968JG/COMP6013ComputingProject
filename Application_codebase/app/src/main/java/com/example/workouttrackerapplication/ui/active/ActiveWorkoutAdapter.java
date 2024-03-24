@@ -1,5 +1,7 @@
 package com.example.workouttrackerapplication.ui.active;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,23 +11,32 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.R;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnCheckboxCountChangeListener {
     private static final int VIEW_TYPE_FOOTER = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
-
     private Context context;
-    private ArrayList<DisplayExerciseObject> activeWorkoutModels;
+    private ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels;
+    private ArrayList<ActiveWorkoutExerciseModel> completedSets = new ArrayList<>() ;
+    private ArrayList<ActiveWorkoutExerciseModel> uncheckedSets = new ArrayList<>() ;
+    private DatabaseSavedWorkouts db;
+    private FragmentManager manager;
 
-    public ActiveWorkoutAdapter(Context context, ArrayList<DisplayExerciseObject> activeWorkoutModels) {
+    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels, FragmentManager manager) {
         this.context = context;
         this.activeWorkoutModels = activeWorkoutModels;
+        this.manager = manager;
     }
 
     @NonNull
@@ -48,37 +59,48 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder) {
-            DisplayExerciseObject model = activeWorkoutModels.get(position);
+            ActiveWorkoutExerciseModel model = activeWorkoutModels.get(position);
             MyViewHolder viewHolder = (MyViewHolder) holder;
-            viewHolder.exName.setText(model.getExName());
+            viewHolder.exName.setText(model.getExerciseName());
 
-            ArrayList<String> reps = model.getAllReps();
-            ArrayList<String> weight = model.getAllWeights();
+            ArrayList<ActiveWorkoutExerciseModel> nestedModels = new ArrayList<>();
+            for (int i = 0; i < model.getSets(); i++) {
+                nestedModels.add(activeWorkoutModels.get(position));
+            }
 
-            NestedActiveWorkoutAdapter nestedActiveWorkoutAdapter = new NestedActiveWorkoutAdapter(context, reps, weight);
+            NestedActiveWorkoutAdapter nestedActiveWorkoutAdapter = new NestedActiveWorkoutAdapter(context, nestedModels, this);
             viewHolder.nestedRv.setLayoutManager(new LinearLayoutManager(context));
             viewHolder.nestedRv.setAdapter(nestedActiveWorkoutAdapter);
-        } else if (holder instanceof FooterViewHolder) {
+        }
+        else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
-            footerViewHolder.saveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Save button clicked", Toast.LENGTH_SHORT).show();
-                }
+            footerViewHolder.saveButton.setOnClickListener(v -> {
+                Toast.makeText(context, "Save button clicked", Toast.LENGTH_SHORT).show();
+
+
+                //TODO build a Dialog here to confirm save
+                //Check if any of the values are higher for squat bench and deadlift
+
+                uncheckedSets.removeAll(completedSets);
+
+
+                FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+
             });
-            footerViewHolder.cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show();
-                }
-            });
+
+            footerViewHolder.cancelButton.setOnClickListener(v ->
+                    Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show());
+
+                // TODO build a Dialog here to confirm cancel
         }
     }
 
     @Override
     public int getItemCount() {
-
         return activeWorkoutModels.size() + 1;
     }
 
@@ -89,6 +111,18 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else {
             return VIEW_TYPE_NORMAL;
         }
+    }
+
+    @Override
+    public void onCheckboxChecked(ActiveWorkoutExerciseModel completed) {
+         completedSets.add(completed);
+         System.out.println(completedSets);
+    }
+
+    @Override
+    public void onCheckBoxUnchecked(ActiveWorkoutExerciseModel unchecked) {
+        uncheckedSets.add(unchecked);
+        System.out.println(unchecked);
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -112,8 +146,4 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public void setData(ArrayList<DisplayExerciseObject> activeWorkoutModels) {
-        this.activeWorkoutModels = activeWorkoutModels;
-        notifyDataSetChanged();
-    }
 }

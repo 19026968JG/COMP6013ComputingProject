@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.workouttrackerapplication.ExerciseModel;
-import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseNameModel;
+import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
 
 import java.util.ArrayList;
 
@@ -96,6 +96,12 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + " FOREIGN KEY ( " + EXERCISE_ID + " ) REFERENCES " + EXERCISES_TABLE_NAME + "(" + EXERCISE_ID + "), "
                 + " FOREIGN KEY ( " + WORKOUT_ID + " ) REFERENCES " + WORKOUTS_TABLE_NAME + "(" + WORKOUT_ID + ")"+ ")";
 
+        // CREATE HISTORY TABLE
+        String createWorkoutHistoryTabel = "CREATE TABLE " + WORKOUT_HISTORY_TABLE_NAME + "("
+                + WORKOUT_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DATE_TIME + " DATETIME, "
+                + WORKOUT_NAME + " TEXT NOT NULL, " + " )";
+
         // EXECUTE STATEMENTS
         db.execSQL(createUsersTable);
         db.execSQL(createWorkoutsTable);
@@ -123,6 +129,18 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         cv.put(USERNAME, username);
 
         long insert = db.insert(USER_TABLE_NAME, null, cv);
+
+        return insert != -1;
+    }
+    public boolean addToWorkoutHistoryTable(ActiveWorkoutExerciseModel model) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+
+        // PUT FOREIGN KEY IN WORKOUT HISTORY TABLE
+        cv.put(WORKOUT_NAME, model.getExerciseName());
+
+        long insert = db.insert(WORKOUT_HISTORY_TABLE_NAME, null, cv);
 
         return insert != -1;
     }
@@ -266,8 +284,8 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutListDisplay;
     }
 
-    public ArrayList<ActiveWorkoutExerciseNameModel> getAllExercisesForWorkout(int workoutId) {
-        ArrayList<ActiveWorkoutExerciseNameModel> exercises = new ArrayList<>();
+    public ArrayList<ActiveWorkoutExerciseModel> getAllExercisesForWorkout(int workoutId) {
+        ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sqlQuery = "SELECT " + EXERCISES_TABLE_NAME + "." + EXERCISE_NAME + ","
@@ -289,7 +307,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                @SuppressLint("Range") int sets = cursor.getInt(cursor.getColumnIndex(SETS));
                @SuppressLint("Range") String weight = cursor.getString(cursor.getColumnIndex(WEIGHT));
                @SuppressLint("Range") String reps = cursor.getString(cursor.getColumnIndex(REPS));
-                exercises.add(new ActiveWorkoutExerciseNameModel(exerciseName,sets,weight,reps));
+                exercises.add(new ActiveWorkoutExerciseModel(exerciseName,sets,weight,reps,false));
 
             } while (cursor.moveToNext());
         }

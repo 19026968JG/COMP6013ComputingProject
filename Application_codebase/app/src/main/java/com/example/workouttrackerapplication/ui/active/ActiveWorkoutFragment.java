@@ -1,7 +1,6 @@
 package com.example.workouttrackerapplication.ui.active;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 
 public class ActiveWorkoutFragment extends Fragment {
-
     private
     ActiveWorkoutParentBinding binding;
     private RecyclerView recyclerViewExercise;
@@ -35,6 +34,7 @@ public class ActiveWorkoutFragment extends Fragment {
     private DatabaseSavedWorkouts db;
     private int workoutId;
     private WorkoutNameViewModel workoutNameViewModel;
+    private FragmentManager manager;
 
     public View onCreateView (@NonNull LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
@@ -63,31 +63,18 @@ public class ActiveWorkoutFragment extends Fragment {
 
             }
         };
-
-
         return root;
     }
 
 
-
     private void addExercisesToView() {
 
-        ArrayList<ActiveWorkoutExerciseNameModel> exercises = new ArrayList<>();
-        ArrayList<DisplayExerciseObject> exercisesForAdapter = new ArrayList<>();
+        ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
 
         exercises = db.getAllExercisesForWorkout(workoutId);
 
-        for (int i = 0; i < exercises.size(); i++) {
-            String tempName = exercises.get(i).getExerciseName();
-            ArrayList<TupleRepsWeight> repsWeight = new ArrayList<>();
-
-            for (int j = 0; j < exercises.get(i).getSets(); j++) {
-                repsWeight.add(new TupleRepsWeight(exercises.get(i).getReps(),exercises.get(i).getWeight()));
-            }
-            exercisesForAdapter.add(new DisplayExerciseObject(tempName,repsWeight));
-        }
-
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercisesForAdapter);
+        manager = getActivity().getSupportFragmentManager();
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercises,manager);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewExercise.setLayoutManager(layoutManager);
         recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());

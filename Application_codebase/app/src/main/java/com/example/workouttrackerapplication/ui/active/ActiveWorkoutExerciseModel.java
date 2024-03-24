@@ -1,18 +1,18 @@
 package com.example.workouttrackerapplication.ui.active;
 
-import java.util.ArrayList;
-
-public class ActiveWorkoutExerciseNameModel {
+public class ActiveWorkoutExerciseModel {
     private String exerciseName;
     private int sets;
     private String weight;
     private String reps;
+    private boolean isChecked;
 
-    public ActiveWorkoutExerciseNameModel(String exerciseName, int sets, String weight, String reps) {
+    public ActiveWorkoutExerciseModel(String exerciseName, int sets, String weight, String reps, boolean isChecked) {
         this.exerciseName = exerciseName;
         this.sets = sets;
         this.weight = weight;
         this.reps = reps;
+        this.isChecked = isChecked;
     }
 
     public String getExerciseName() {
@@ -45,5 +45,13 @@ public class ActiveWorkoutExerciseNameModel {
 
     public void setReps(String reps) {
         this.reps = reps;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }
