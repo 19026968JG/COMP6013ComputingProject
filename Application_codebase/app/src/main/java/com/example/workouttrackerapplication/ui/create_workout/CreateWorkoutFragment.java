@@ -53,7 +53,7 @@ public class CreateWorkoutFragment extends Fragment {
         displayList = new ArrayList<>();
         wList = binding.workoutList;
         databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
-        wList.addFooterView(footer);
+//        wList.addFooterView(footer);
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
 

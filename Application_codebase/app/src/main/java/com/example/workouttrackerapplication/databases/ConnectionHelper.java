@@ -1,4 +1,4 @@
-package com.example.workouttrackerapplication;
+package com.example.workouttrackerapplication.databases;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -14,7 +14,7 @@ public class ConnectionHelper {
         database="workout_app_max_lifts";
         port="3306";
         password="14g072Fu1440.";
-        username="root";
+        username="max_lift_database";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -25,8 +25,8 @@ public class ConnectionHelper {
             Class.forName("com.example.workouttracker");
             ConnectionURL = "jdbc:mysql://"+ip+":"+port+"/"+database+"?user="+username+"&password="+password;
             con = DriverManager.getConnection(ConnectionURL);
-        }catch (Exception ex) {
-            Log.e("Error", ex.getMessage());
+        }catch (Exception e) {
+            Log.e("Error", e.getMessage());
         }
         return con;
     }
