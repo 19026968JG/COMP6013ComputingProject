@@ -18,6 +18,7 @@ import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentHomeBinding;
 import com.example.workouttrackerapplication.ui.user.UserLoginFragment;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class HomeFragment extends Fragment {
 
@@ -46,7 +47,7 @@ public class HomeFragment extends Fragment {
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
 
-                transaction.replace(R.id.container,new UserLoginFragment());
+                transaction.add(R.id.container,new UserLoginFragment());
                 transaction.addToBackStack("add username transition slide");
                 transaction.commit();
             }
