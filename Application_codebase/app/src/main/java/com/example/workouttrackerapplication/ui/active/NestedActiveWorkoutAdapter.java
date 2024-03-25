@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiveWorkoutAdapter.NestedViewHolder> {
     private Context context;
     private ArrayList<ActiveWorkoutExerciseModel> exerciseObject;
-    private OnCheckboxCountChangeListener onCheckboxCountChangeListener;
     private CompletedSetsAction listener;
 
 

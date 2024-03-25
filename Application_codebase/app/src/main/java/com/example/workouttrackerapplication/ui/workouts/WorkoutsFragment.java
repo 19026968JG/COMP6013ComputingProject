@@ -8,12 +8,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.activity.OnBackPressedCallback;
 
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
@@ -35,7 +38,6 @@ public class WorkoutsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
         binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -48,6 +50,14 @@ public class WorkoutsFragment extends Fragment {
         navBar.setVisibility(View.VISIBLE);
         updateListDisplay();
 
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Toast.makeText(getContext(),"Use 'Cancel Workout' Button To Exit Without Saving", Toast.LENGTH_SHORT).show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),onBackPressedCallback);
+
         // Floating Action Button Functionality
         binding.fabAddWorkoutButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -57,9 +67,9 @@ public class WorkoutsFragment extends Fragment {
 
                transaction.add(R.id.workouts_page,  CreateWorkoutFragment.class,null);
                 binding.cardView2.setVisibility(View.GONE);
-                navBar.setVisibility(View.GONE);
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
+
 
             }
         });

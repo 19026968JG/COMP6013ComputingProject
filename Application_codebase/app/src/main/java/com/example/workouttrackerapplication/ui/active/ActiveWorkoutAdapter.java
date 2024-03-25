@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +42,7 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     private DatabaseSavedWorkouts db ;
     private FragmentManager manager;
     protected String workoutName;
+    private ActiveWorkoutParentBinding binding;
 
     public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels, FragmentManager manager, String workoutName) {
         this.context = context;
@@ -87,15 +89,28 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
         else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
-            footerViewHolder.saveButton.setOnClickListener(v -> {
+            footerViewHolder.cancelButton.setOnClickListener(v -> {
+                new AlertDialog.Builder(context)
+                        .setTitle("Do You Want To Cancel This Workout? Your Progress Will Not Be Saved!")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
+                            transaction.addToBackStack(null);
 
-                //TODO build a Dialog here to confirm save
-                //Check if any of the values are higher for squat bench and deadlift
+                            transaction.commit();
+
+
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            dialog.dismiss();
+                        }).create().show();
+            });
+
+            footerViewHolder.saveButton.setOnClickListener(v -> {
                        if(completedSets.size() > 0 ) {
                            new AlertDialog.Builder(context)
-                                   .setTitle("Do You Want To Save This Workout?")
+                                   .setTitle("Do You Want To Finish This Workout?")
                                    .setPositiveButton("Yes", (dialog, which) -> {
-
 
                                        ArrayList<ActiveWorkoutExerciseModel> reducedList = new ArrayList<>();
                                        reducedList = reduceCompletedDataSet(completedSets);
@@ -119,12 +134,7 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                                 updateMaxDBValue(fireDb,"BENCH",Double.parseDouble(set.getWeight()));
                                                 break;
                                            }
-
-
-
                                        }
-                       //TODO CHECK FIREBASE SERVER AND UPDATE THE FIGURES ACCORDINGLY
-
                                        FragmentTransaction transaction = manager.beginTransaction();
                                        transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
                                        transaction.addToBackStack(null);
@@ -134,27 +144,9 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                        dialog.dismiss();
                                    })
                                    .create().show();
-                       } else{
-                           Toast.makeText(v.getContext(), "You Must Complete At Least One Set To Save The Workout!",Toast.LENGTH_LONG).show();
-                       }
+                       }else{Toast.makeText(v.getContext(), "You Must Complete At Least One Set To Save The Workout!",Toast.LENGTH_LONG).show();}
             });
 
-
-            footerViewHolder.cancelButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show();
-
-                new AlertDialog.Builder(context)
-                        .setTitle("Are You Sure You Want To Cancel This Workout? \n Your Current Progress Will Not Be Saved!")
-                        .setPositiveButton("Yes", (dialog, which) -> {
-                            FragmentTransaction transaction = manager.beginTransaction();
-                            transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        })
-                        .setNegativeButton("No", (dialog, which) -> {
-                            dialog.dismiss();
-                        });
-            });
         }
     }
 

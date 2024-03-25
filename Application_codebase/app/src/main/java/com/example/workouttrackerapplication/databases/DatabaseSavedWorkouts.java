@@ -96,8 +96,10 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + REPS + " INTEGER, "
                 + WEIGHT + " DOUBLE, "
                 + " PRIMARY KEY (" + EXERCISE_ID + ", " + WORKOUT_ID + "),"
-                + " FOREIGN KEY ( " + EXERCISE_ID + " ) REFERENCES " + EXERCISES_TABLE_NAME + "(" + EXERCISE_ID + "), "
-                + " FOREIGN KEY ( " + WORKOUT_ID + " ) REFERENCES " + WORKOUTS_TABLE_NAME + "(" + WORKOUT_ID + ")"+ ")";
+                + " FOREIGN KEY ( " + EXERCISE_ID + " ) REFERENCES " + EXERCISES_TABLE_NAME
+                + "(" + EXERCISE_ID + "), "
+                + " FOREIGN KEY ( " + WORKOUT_ID + " ) REFERENCES " + WORKOUTS_TABLE_NAME
+                + "(" + WORKOUT_ID + ")"+ ")";
 
         // CREATE HISTORY TABLE
         String createWorkoutHistoryTable = "CREATE TABLE " + WORKOUT_HISTORY_TABLE_NAME + "("
@@ -113,7 +115,8 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + SETS + " INTEGER, "
                 + REPS + " INTEGER, "
                 + WEIGHT + " DOUBLE, "
-                + " FOREIGN KEY ( " + WORKOUT_HISTORY_ID + " ) REFERENCES " + WORKOUT_HISTORY_TABLE_NAME + "(" + WORKOUT_HISTORY_ID + ")" + ")";
+                + " FOREIGN KEY ( " + WORKOUT_HISTORY_ID + " ) REFERENCES " + WORKOUT_HISTORY_TABLE_NAME
+                + "(" + WORKOUT_HISTORY_ID + ")" + ")";
 
 
         // EXECUTE STATEMENTS
@@ -248,7 +251,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return userId;
     }
 
-    // Method to get the latest exercise ID from the EXERCISES_TABLE
     private int getExerciseId() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + EXERCISE_ID + ") FROM " + EXERCISES_TABLE_NAME, null);
@@ -260,7 +262,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return exerciseId;
     }
 
-    // Method to get the latest workout ID from the WORKOUTS_TABLE
     public int getWorkoutId() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_ID + ") FROM " + WORKOUTS_TABLE_NAME, null);
@@ -288,12 +289,11 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         int workoutId = -1;
 
-        // Using selectionArgs to prevent SQL injection and to correctly handle string values
         Cursor cursor = db.rawQuery("SELECT " + WORKOUT_ID + " FROM " + WORKOUTS_TABLE_NAME
                 + " WHERE " + WORKOUT_NAME + "=?", new String[]{name});
 
         if (cursor.moveToFirst()) {
-            // Fetch the workout ID from the cursor
+
             workoutId = cursor.getInt(cursor.getColumnIndex(WORKOUT_ID));
         }
         cursor.close();
@@ -347,88 +347,20 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + workoutId;
 
 
-        Cursor cursor = db.rawQuery(sqlQuery,null);
+        Cursor cursor = db.rawQuery(sqlQuery, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
-               @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
-               @SuppressLint("Range") int sets = cursor.getInt(cursor.getColumnIndex(SETS));
-               @SuppressLint("Range") String weight = cursor.getString(cursor.getColumnIndex(WEIGHT));
-               @SuppressLint("Range") String reps = cursor.getString(cursor.getColumnIndex(REPS));
-                exercises.add(new ActiveWorkoutExerciseModel(exerciseName,sets,weight,reps,false));
+                @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
+                @SuppressLint("Range") int sets = cursor.getInt(cursor.getColumnIndex(SETS));
+                @SuppressLint("Range") String weight = cursor.getString(cursor.getColumnIndex(WEIGHT));
+                @SuppressLint("Range") String reps = cursor.getString(cursor.getColumnIndex(REPS));
+                exercises.add(new ActiveWorkoutExerciseModel(exerciseName, sets, weight, reps, false));
 
             } while (cursor.moveToNext());
         }
         cursor.close();
         return exercises;
-    }
-    @SuppressLint("Range")
-    public ArrayList<Integer> getNumberOfSets(int workoutId) {
-        ArrayList<Integer> setsList = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlQuery = "SELECT " + EXERCISE_VALUES_TABLE_NAME + "." + SETS + ", "
-                + " FROM " + EXERCISES_TABLE_NAME
-                + " INNER JOIN " + EXERCISE_VALUES_TABLE_NAME
-                + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID
-                + " = " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID
-                + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + workoutId;
-        
-        Cursor cursor = db.rawQuery(sqlQuery,null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                setsList.add(cursor.getInt(cursor.getColumnIndex(SETS)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return setsList;
-    }
-
-    @SuppressLint("Range")
-    public ArrayList<Float> getAllWeightsForWorkout(int workoutId) {
-        ArrayList<Float> weights = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlQuery = "SELECT " + EXERCISE_VALUES_TABLE_NAME + "." + WEIGHT + ", "
-                + " FROM " + EXERCISE_VALUES_TABLE_NAME
-                + " INNER JOIN " + EXERCISE_VALUES_TABLE_NAME
-                + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID
-                + " = " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID
-                + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + workoutId;
-
-        Cursor cursor = db.rawQuery(sqlQuery,null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                weights.add(cursor.getFloat(cursor.getColumnIndex(WEIGHT)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return weights;
-    }
-
-    @SuppressLint("Range")
-    public ArrayList<Integer> getAllRepsForWorkout(int workoutId) {
-        ArrayList<Integer> weights = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String sqlQuery = "SELECT " + EXERCISE_VALUES_TABLE_NAME + "." + REPS + ", "
-                + " FROM " + EXERCISE_VALUES_TABLE_NAME
-                + " INNER JOIN " + EXERCISE_VALUES_TABLE_NAME
-                + " ON " + EXERCISES_TABLE_NAME + "." + EXERCISE_ID
-                + " = " + EXERCISE_VALUES_TABLE_NAME + "." + EXERCISE_ID
-                + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " = " + workoutId;
-
-        Cursor cursor = db.rawQuery(sqlQuery,null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                weights.add(cursor.getInt(cursor.getColumnIndex(REPS)));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return weights;
     }
 
     public ArrayList<ActiveWorkoutExerciseModel> getAllHistory() {

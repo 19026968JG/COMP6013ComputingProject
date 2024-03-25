@@ -61,15 +61,6 @@ public class ActiveWorkoutFragment extends WorkoutsFragment {
 
         addExercisesToView();
 
-        OnBackPressedDispatcher onBackPressedDispatcher = new OnBackPressedDispatcher();
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                setEnabled(false);
-                Toast.makeText(getContext(), "Exiting", Toast.LENGTH_SHORT).show();
-
-            }
-        };
         return root;
     }
 
