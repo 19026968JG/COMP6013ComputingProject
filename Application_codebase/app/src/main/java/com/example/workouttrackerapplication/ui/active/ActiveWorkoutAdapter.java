@@ -100,8 +100,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                            db.addToWorkoutHistoryItemTable(set);
                                        }
 
-
-
                                        FragmentTransaction transaction = manager.beginTransaction();
                                        transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
                                        transaction.addToBackStack(null);
@@ -117,20 +115,21 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
             });
 
 
-            footerViewHolder.cancelButton.setOnClickListener(v ->
-                    Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show());
+            footerViewHolder.cancelButton.setOnClickListener(v -> {
+                Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show();
 
-            new AlertDialog.Builder(context)
-                    .setTitle("Are You Sure You Want To Cancel This Workout? \n Your Current Progress Will Not Be Saved!")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        FragmentTransaction transaction = manager.beginTransaction();
-                        transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                    })
-                    .setNegativeButton("No", (dialog, which) -> {
-                         dialog.dismiss();
-                     });
+                new AlertDialog.Builder(context)
+                        .setTitle("Are You Sure You Want To Cancel This Workout? \n Your Current Progress Will Not Be Saved!")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            FragmentTransaction transaction = manager.beginTransaction();
+                            transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+            });
         }
     }
 

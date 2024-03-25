@@ -70,6 +70,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_VALUES_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_HISTORY_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_HISTORY_ITEM_TABLE_NAME);
 
         // CREATE USERS TABLE
         String createUsersTable = "CREATE TABLE " + USER_TABLE_NAME + "("
@@ -100,27 +101,28 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + " FOREIGN KEY ( " + WORKOUT_ID + " ) REFERENCES " + WORKOUTS_TABLE_NAME + "(" + WORKOUT_ID + ")"+ ")";
 
         // CREATE HISTORY TABLE
-        String createWorkoutHistoryTabel = "CREATE TABLE " + WORKOUT_HISTORY_TABLE_NAME + "("
+        String createWorkoutHistoryTable = "CREATE TABLE " + WORKOUT_HISTORY_TABLE_NAME + "("
                 + WORKOUT_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + DATE_TIME + " DATETIME, "
-                + WORKOUT_NAME + " TEXT NOT NULL, " + " )";
+                + WORKOUT_NAME + " TEXT NOT NULL " + ")";
 
         //CREATE HISTORY ITEM TABLE
-        String createWorkoutHistoryItemTable = " CREATE TABLE " + WORKOUT_HISTORY_ITEM_TABLE_NAME + "("
+        String createWorkoutHistoryItemTable = "CREATE TABLE " + WORKOUT_HISTORY_ITEM_TABLE_NAME + "("
                 + WORKOUT_HISTORY_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + WORKOUT_HISTORY_ID + " INTEGER NOT NULL, "
+                + WORKOUT_HISTORY_ID + " INTEGER NOT NULL, "  // First occurrence
                 + EXERCISE_NAME + " TEXT NOT NULL, "
                 + SETS + " INTEGER, "
                 + REPS + " INTEGER, "
                 + WEIGHT + " DOUBLE, "
-                + " FOREIGN KEY ( " + WORKOUT_HISTORY_ID + " ) REFERENCES " + WORKOUT_HISTORY_TABLE_NAME + "(" + WORKOUT_HISTORY_ID + ")";
+                + " FOREIGN KEY ( " + WORKOUT_HISTORY_ID + " ) REFERENCES " + WORKOUT_HISTORY_TABLE_NAME + "(" + WORKOUT_HISTORY_ID + ")" + ")";
+
 
         // EXECUTE STATEMENTS
         db.execSQL(createUsersTable);
         db.execSQL(createWorkoutsTable);
         db.execSQL(createExercisesTable);
         db.execSQL(createExerciseValuesTable);
-        db.execSQL(createWorkoutHistoryTabel);
+        db.execSQL(createWorkoutHistoryTable);
         db.execSQL(createWorkoutHistoryItemTable);
         db.execSQL("PRAGMA foreign_keys=ON;");
 
@@ -153,8 +155,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-
-        // PUT FOREIGN KEY IN WORKOUT HISTORY TABLE
         cv.put(WORKOUT_NAME, model.getExerciseName());
 
         long insert = db.insert(WORKOUT_HISTORY_TABLE_NAME, null, cv);
@@ -165,7 +165,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     public boolean addToWorkoutHistoryItemTable(ActiveWorkoutExerciseModel model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-
 
             cv.put(EXERCISE_NAME, model.getExerciseName());
             cv.put(SETS, model.getSets());
