@@ -1,7 +1,12 @@
 package com.example.workouttrackerapplication.ui.active;
 
+import java.util.ArrayList;
+
 public interface OnCheckboxCountChangeListener {
-    void onCheckboxChecked(ActiveWorkoutExerciseModel completed);
-    void onCheckBoxUnchecked(ActiveWorkoutExerciseModel unchecked);
+
+    void addCompletedSetToList(ActiveWorkoutExerciseModel completed);
+    void removeFromCompletedSetList(ActiveWorkoutExerciseModel completed);
+
+    ArrayList<ActiveWorkoutExerciseModel> getCompletedSets();
 
 }

@@ -49,6 +49,9 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     private static final String WORKOUT_HISTORY_ID = "WORKOUT_HISTORY_ID"; // PRIMARY KEY
     private static final String DATE_TIME = "DATE_TIME";
 
+    private static final String WORKOUT_HISTORY_ITEM_TABLE_NAME = "WORKOUT_HISTORY_ITEM_TABLE";
+    private static final String WORKOUT_HISTORY_ITEM_ID = "WORKOUT_HISTORY_ID"; // PRIMARY KEY
+
 
     public DatabaseSavedWorkouts(@Nullable Context context) {
         super(context, "create_workout_db.db", null, DATABASE_VERSION);
@@ -102,11 +105,23 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
                 + DATE_TIME + " DATETIME, "
                 + WORKOUT_NAME + " TEXT NOT NULL, " + " )";
 
+        //CREATE HISTORY ITEM TABLE
+        String createWorkoutHistoryItemTable = " CREATE TABLE " + WORKOUT_HISTORY_ITEM_TABLE_NAME + "("
+                + WORKOUT_HISTORY_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + WORKOUT_HISTORY_ID + " INTEGER NOT NULL, "
+                + EXERCISE_NAME + " TEXT NOT NULL, "
+                + SETS + " INTEGER, "
+                + REPS + " INTEGER, "
+                + WEIGHT + " DOUBLE, "
+                + " FOREIGN KEY ( " + WORKOUT_HISTORY_ID + " ) REFERENCES " + WORKOUT_HISTORY_TABLE_NAME + "(" + WORKOUT_HISTORY_ID + ")";
+
         // EXECUTE STATEMENTS
         db.execSQL(createUsersTable);
         db.execSQL(createWorkoutsTable);
         db.execSQL(createExercisesTable);
         db.execSQL(createExerciseValuesTable);
+        db.execSQL(createWorkoutHistoryTabel);
+        db.execSQL(createWorkoutHistoryItemTable);
         db.execSQL("PRAGMA foreign_keys=ON;");
 
     }
@@ -118,6 +133,8 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + WORKOUTS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + EXERCISE_VALUES_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_HISTORY_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WORKOUT_HISTORY_ITEM_TABLE_NAME);
 
         onCreate(db);
     }
@@ -144,6 +161,22 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
         return insert != -1;
     }
+
+    public boolean addToWorkoutHistoryItemTable(ActiveWorkoutExerciseModel model) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+
+            cv.put(EXERCISE_NAME, model.getExerciseName());
+            cv.put(SETS, model.getSets());
+            cv.put(REPS, model.getReps());
+            cv.put(WEIGHT, model.getWeight());
+
+
+        long insert = db.insert(WORKOUT_HISTORY_ITEM_TABLE_NAME,null, cv);
+        return insert != -1;
+    }
+
 
     public boolean checkDatabaseExists(Context context) {
         String path = context.getDatabasePath("create_workout_db.db").getPath();

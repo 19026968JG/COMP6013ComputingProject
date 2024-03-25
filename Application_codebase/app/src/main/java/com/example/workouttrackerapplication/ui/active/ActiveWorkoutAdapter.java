@@ -2,6 +2,7 @@ package com.example.workouttrackerapplication.ui.active;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,18 +20,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnCheckboxCountChangeListener {
+public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements NestedActiveWorkoutAdapter.CompletedSetsAction {
     private static final int VIEW_TYPE_FOOTER = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private Context context;
+
     private ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels;
-    private ArrayList<ActiveWorkoutExerciseModel> completedSets = new ArrayList<>() ;
+    protected ArrayList<ActiveWorkoutExerciseModel> completedSets = new ArrayList<>() ;
     private ArrayList<ActiveWorkoutExerciseModel> uncheckedSets = new ArrayList<>() ;
-    private DatabaseSavedWorkouts db;
+    private DatabaseSavedWorkouts db ;
     private FragmentManager manager;
 
     public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels, FragmentManager manager) {
@@ -44,6 +49,8 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view;
+        db = new DatabaseSavedWorkouts(context);
+
         switch (viewType) {
             case VIEW_TYPE_FOOTER:
                 view = inflater.inflate(R.layout.active_workout_buttons, parent, false);
@@ -76,26 +83,54 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
 
             footerViewHolder.saveButton.setOnClickListener(v -> {
-                Toast.makeText(context, "Save button clicked", Toast.LENGTH_SHORT).show();
-
 
                 //TODO build a Dialog here to confirm save
                 //Check if any of the values are higher for squat bench and deadlift
+                       if(completedSets.size() > 0 ) {
+                           new AlertDialog.Builder(context)
+                                   .setTitle("Do You Want To Save This Workout?")
+                                   .setPositiveButton("Yes", (dialog, which) -> {
 
-                uncheckedSets.removeAll(completedSets);
+
+                                       ArrayList<ActiveWorkoutExerciseModel> reducedList = new ArrayList<>();
+                                       reducedList = reduceCompletedDataSet(completedSets);
+
+                                       for (ActiveWorkoutExerciseModel set : reducedList) {
+                                           db.addToWorkoutHistoryTable(set);
+                                           db.addToWorkoutHistoryItemTable(set);
+                                       }
 
 
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
 
+                                       FragmentTransaction transaction = manager.beginTransaction();
+                                       transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
+                                       transaction.addToBackStack(null);
+                                       transaction.commit();
+                                   })
+                                   .setNegativeButton("No", (dialog, which) -> {
+                                       dialog.dismiss();
+                                   })
+                                   .create().show();
+                       } else{
+                           Toast.makeText(v.getContext(), "You Must Complete At Least One Set To Save The Workout!",Toast.LENGTH_LONG).show();
+                       }
             });
+
 
             footerViewHolder.cancelButton.setOnClickListener(v ->
                     Toast.makeText(context, "Cancel button clicked", Toast.LENGTH_SHORT).show());
 
-                // TODO build a Dialog here to confirm cancel
+            new AlertDialog.Builder(context)
+                    .setTitle("Are You Sure You Want To Cancel This Workout? \n Your Current Progress Will Not Be Saved!")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+                    })
+                    .setNegativeButton("No", (dialog, which) -> {
+                         dialog.dismiss();
+                     });
         }
     }
 
@@ -114,15 +149,44 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onCheckboxChecked(ActiveWorkoutExerciseModel completed) {
-         completedSets.add(completed);
-         System.out.println(completedSets);
+    public void onSetCompleted(ActiveWorkoutExerciseModel model) {
+        completedSets.add(model);
+        for (ActiveWorkoutExerciseModel exmodel:
+             completedSets) {
+            System.out.println(exmodel.toString());
+        }
+    }
+    @Override
+    public void onSetRemoved(ActiveWorkoutExerciseModel model) {
+        completedSets.remove(model);
     }
 
-    @Override
-    public void onCheckBoxUnchecked(ActiveWorkoutExerciseModel unchecked) {
-        uncheckedSets.add(unchecked);
-        System.out.println(unchecked);
+    private ArrayList<ActiveWorkoutExerciseModel> reduceCompletedDataSet(ArrayList<ActiveWorkoutExerciseModel> completedWorkout) {
+        ArrayList<ActiveWorkoutExerciseModel> updatedDataList = new ArrayList<>();
+        Map<ActiveWorkoutExerciseModel, Integer> setCounts = new HashMap<>();
+
+        for (ActiveWorkoutExerciseModel set : completedWorkout) {
+            if (setCounts.containsKey(set)) {
+                setCounts.put(set, setCounts.get(set) + 1);
+            } else {
+                setCounts.put(set, 1);
+            }
+        }
+
+        for (Map.Entry<ActiveWorkoutExerciseModel, Integer> entry : setCounts.entrySet()) {
+            ActiveWorkoutExerciseModel originalSet = entry.getKey();
+            int count = entry.getValue();
+
+            ActiveWorkoutExerciseModel reducedSet = new ActiveWorkoutExerciseModel(
+                    originalSet.getExerciseName(),
+                    count,
+                    originalSet.getWeight(),
+                    originalSet.getReps(),
+                    originalSet.isChecked()
+            );
+            updatedDataList.add(reducedSet);
+        }
+        return updatedDataList;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -145,5 +209,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
             saveButton = itemView.findViewById(R.id.active_workout_save_button);
         }
     }
+
 
 }

@@ -18,11 +18,13 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
     private Context context;
     private ArrayList<ActiveWorkoutExerciseModel> exerciseObject;
     private OnCheckboxCountChangeListener onCheckboxCountChangeListener;
+    private CompletedSetsAction listener;
 
-    public NestedActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> exerciseObject, OnCheckboxCountChangeListener listener) {
+
+    public NestedActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> exerciseObject, CompletedSetsAction listener) {
         this.context = context;
         this.exerciseObject = exerciseObject;
-        this.onCheckboxCountChangeListener = listener;
+        this.listener = listener;
     }
 
     @NonNull
@@ -48,12 +50,12 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             setModel.setChecked(isChecked);
             if(isChecked) {
-                onCheckboxCountChangeListener.onCheckboxChecked(setModel);
-            } else if(!isChecked) {
-                onCheckboxCountChangeListener.onCheckBoxUnchecked(setModel);
+                onDataChange(setModel);
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -76,4 +78,13 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
         }
     }
 
+    private void onDataChange(ActiveWorkoutExerciseModel model){
+        if(listener != null) {
+            listener.onSetCompleted(model);
+        }
+    }
+    public interface CompletedSetsAction {
+        void onSetCompleted(ActiveWorkoutExerciseModel model);
+        void onSetRemoved(ActiveWorkoutExerciseModel model);
+    }
 }

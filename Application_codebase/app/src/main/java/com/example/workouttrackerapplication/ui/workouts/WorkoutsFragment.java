@@ -18,11 +18,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
+import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorkoutsFragment extends Fragment {
 
@@ -44,7 +47,7 @@ public class WorkoutsFragment extends Fragment {
         workoutsList = db.getAllWorkoutNames();
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
-
+        navBar.setVisibility(View.VISIBLE);
         updateListDisplay();
 
         // Floating Action Button Functionality
@@ -109,6 +112,4 @@ public class WorkoutsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 }

@@ -1,5 +1,7 @@
 package com.example.workouttrackerapplication.ui.active;
 
+import androidx.annotation.NonNull;
+
 public class ActiveWorkoutExerciseModel {
     private String exerciseName;
     private int sets;
@@ -53,5 +55,16 @@ public class ActiveWorkoutExerciseModel {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "exercise: " + exerciseName
+                + " sets: " + sets
+                + " weight: " + weight
+                + " reps: " + reps
+                + " isChecked: " + isChecked;
+
     }
 }
