@@ -22,9 +22,9 @@ public class FirebaseUserProfile {
     public HashMap<String, Object> getAllValues() {
         HashMap<String, Object> userData = new HashMap<>();
         userData.put("userName", userName);
-        userData.put("squat", squat);
-        userData.put("bench", bench);
-        userData.put("deadlift", deadlift);
+        userData.put("SQUAT", squat);
+        userData.put("BENCH", bench);
+        userData.put("DEADLIFT", deadlift);
         return userData;
     }
 

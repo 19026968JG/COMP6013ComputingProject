@@ -76,7 +76,7 @@ public class ActiveWorkoutFragment extends WorkoutsFragment {
 
     private void addExercisesToView() {
 
-        ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
+        ArrayList<ActiveWorkoutExerciseModel> exercises;
 
         exercises = db.getAllExercisesForWorkout(workoutId);
 

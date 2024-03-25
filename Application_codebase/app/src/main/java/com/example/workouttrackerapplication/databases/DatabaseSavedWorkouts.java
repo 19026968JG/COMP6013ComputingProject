@@ -25,8 +25,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     private static final String USER_TABLE_NAME = "USER_TABLE";
     private static final String USER_ID = "USER_ID"; // PRIMARY KEY
     private static final String USERNAME = "USERNAME";
-    private static final String USER_LAST_NAME = "USER_LAST_NAME";
-
 
     // WORKOUTS TABLE VALUES
     private static final String WORKOUTS_TABLE_NAME = "WORKOUTS_TABLE";
@@ -302,7 +300,6 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return workoutId;
     }
 
-    // Method to get the latest workout NAME from the WORKOUTS_TABLE
     public String getWorkoutName() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_NAME +") FROM " + WORKOUTS_TABLE_NAME, null);
@@ -437,6 +434,32 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     public ArrayList<ActiveWorkoutExerciseModel> getAllHistory() {
             //TODO HAVE FUNCTION RETURN HISTORY
         return null;
+    }
+
+    @SuppressLint("Range")
+    public String getUsernameFromWorkoutName(String name) {
+        ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String userName = "";
+
+        String sqlQuery = "SELECT " + USER_TABLE_NAME + "." + USERNAME
+                + " FROM " + USER_TABLE_NAME
+                + " INNER JOIN " + WORKOUTS_TABLE_NAME
+                + " ON " + WORKOUTS_TABLE_NAME + "." + USER_ID
+                + " = " + USER_TABLE_NAME + "." + USER_ID
+                + " WHERE " + WORKOUTS_TABLE_NAME + "." + WORKOUT_NAME + "=" + "=?" ;
+
+
+        Cursor cursor = db.rawQuery(sqlQuery,new String[]{name});
+
+        if(cursor.moveToFirst()) {
+            do {
+                userName = cursor.getString(cursor.getColumnIndex(USERNAME));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+         return userName;
     }
 
 }

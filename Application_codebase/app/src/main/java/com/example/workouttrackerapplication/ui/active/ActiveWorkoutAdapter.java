@@ -4,6 +4,7 @@ import static android.app.PendingIntent.getActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,11 +101,28 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                        reducedList = reduceCompletedDataSet(completedSets);
 
                                        db.addToWorkoutHistoryTable(workoutName);
+                                       DatabaseReference fireDb = FirebaseDatabase
+                                               .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
+                                               .getReference("LeaderboardValues/Users/"+db.getUsernameFromWorkoutName(workoutName));
 
                                        for (ActiveWorkoutExerciseModel set : reducedList) {
                                            db.addToWorkoutHistoryItemTable(set);
-                                       }
 
+                                           switch (set.getExerciseName()){
+                                            case "SQUAT":
+                                                updateMaxDBValue(fireDb,"SQUAT",Double.parseDouble(set.getWeight()));
+                                                break;
+                                            case "DEADLIFT":
+                                                updateMaxDBValue(fireDb,"DEADLIFT",Double.parseDouble(set.getWeight()));
+                                                break;
+                                            case "BENCH":
+                                                updateMaxDBValue(fireDb,"BENCH",Double.parseDouble(set.getWeight()));
+                                                break;
+                                           }
+
+
+
+                                       }
                        //TODO CHECK FIREBASE SERVER AND UPDATE THE FIGURES ACCORDINGLY
 
                                        FragmentTransaction transaction = manager.beginTransaction();
@@ -135,6 +156,24 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                         });
             });
         }
+    }
+
+    private void updateMaxDBValue(DatabaseReference dbRef, String key, double workoutSquatValue) {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                Double dbValue = snapshot.child(key).getValue(Double.class);
+                if(dbValue == null || dbValue < workoutSquatValue) {
+                    dbRef.child(key).setValue(workoutSquatValue);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase Update weight error", error.getMessage());
+            }
+        });
     }
 
     @Override
