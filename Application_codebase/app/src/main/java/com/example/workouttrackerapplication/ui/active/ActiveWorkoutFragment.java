@@ -20,12 +20,13 @@ import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutNameViewModel;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 
-public class ActiveWorkoutFragment extends Fragment {
+public class ActiveWorkoutFragment extends WorkoutsFragment {
     private
     ActiveWorkoutParentBinding binding;
     private RecyclerView recyclerViewExercise;
@@ -35,6 +36,7 @@ public class ActiveWorkoutFragment extends Fragment {
     private int workoutId;
     private WorkoutNameViewModel workoutNameViewModel;
     private FragmentManager manager;
+    private String workoutName;
 
     public View onCreateView (@NonNull LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
@@ -42,6 +44,11 @@ public class ActiveWorkoutFragment extends Fragment {
         workoutNameViewModel = new ViewModelProvider(requireActivity()).get(WorkoutNameViewModel.class);
         db = new DatabaseSavedWorkouts(getContext());
         workoutId = db.getWorkoutIdFromName(workoutNameViewModel.getWorkoutName());
+
+        Bundle wOName = getArguments();
+        if(wOName != null){
+            workoutName = wOName.getString("workoutName");
+        }
 
         binding = ActiveWorkoutParentBinding.inflate(inflater, container,false);
         View root = binding.getRoot();
@@ -74,11 +81,12 @@ public class ActiveWorkoutFragment extends Fragment {
         exercises = db.getAllExercisesForWorkout(workoutId);
 
         manager = getActivity().getSupportFragmentManager();
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercises,manager);
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercises,manager,workoutName);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewExercise.setLayoutManager(layoutManager);
         recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());
         recyclerViewExercise.setAdapter(adapter);
 
     }
+
 }

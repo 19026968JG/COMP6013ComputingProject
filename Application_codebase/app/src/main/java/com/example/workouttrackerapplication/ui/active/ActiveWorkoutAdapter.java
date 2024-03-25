@@ -31,17 +31,18 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     private static final int VIEW_TYPE_FOOTER = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private Context context;
-
     private ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels;
     protected ArrayList<ActiveWorkoutExerciseModel> completedSets = new ArrayList<>() ;
     private ArrayList<ActiveWorkoutExerciseModel> uncheckedSets = new ArrayList<>() ;
     private DatabaseSavedWorkouts db ;
     private FragmentManager manager;
+    protected String workoutName;
 
-    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels, FragmentManager manager) {
+    public ActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> activeWorkoutModels, FragmentManager manager, String workoutName) {
         this.context = context;
         this.activeWorkoutModels = activeWorkoutModels;
         this.manager = manager;
+        this.workoutName = workoutName;
     }
 
     @NonNull
@@ -95,10 +96,13 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                        ArrayList<ActiveWorkoutExerciseModel> reducedList = new ArrayList<>();
                                        reducedList = reduceCompletedDataSet(completedSets);
 
+                                       db.addToWorkoutHistoryTable(workoutName);
+
                                        for (ActiveWorkoutExerciseModel set : reducedList) {
-                                           db.addToWorkoutHistoryTable(set);
                                            db.addToWorkoutHistoryItemTable(set);
                                        }
+
+                       //TODO CHECK FIREBASE SERVER AND UPDATE THE FIGURES ACCORDINGLY
 
                                        FragmentTransaction transaction = manager.beginTransaction();
                                        transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());

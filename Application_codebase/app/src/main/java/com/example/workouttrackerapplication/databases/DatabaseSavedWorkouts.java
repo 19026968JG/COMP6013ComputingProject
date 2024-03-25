@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
 
@@ -50,7 +51,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     private static final String DATE_TIME = "DATE_TIME";
 
     private static final String WORKOUT_HISTORY_ITEM_TABLE_NAME = "WORKOUT_HISTORY_ITEM_TABLE";
-    private static final String WORKOUT_HISTORY_ITEM_ID = "WORKOUT_HISTORY_ID"; // PRIMARY KEY
+    private static final String WORKOUT_HISTORY_ITEM_ID = "WORKOUT_HISTORY_ITEM_ID"; // PRIMARY KEY
 
 
     public DatabaseSavedWorkouts(@Nullable Context context) {
@@ -103,13 +104,13 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         // CREATE HISTORY TABLE
         String createWorkoutHistoryTable = "CREATE TABLE " + WORKOUT_HISTORY_TABLE_NAME + "("
                 + WORKOUT_HISTORY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DATE_TIME + " DATETIME, "
+                + DATE_TIME + " TEXT, "
                 + WORKOUT_NAME + " TEXT NOT NULL " + ")";
 
         //CREATE HISTORY ITEM TABLE
         String createWorkoutHistoryItemTable = "CREATE TABLE " + WORKOUT_HISTORY_ITEM_TABLE_NAME + "("
                 + WORKOUT_HISTORY_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + WORKOUT_HISTORY_ID + " INTEGER NOT NULL, "  // First occurrence
+                + WORKOUT_HISTORY_ID + " INTEGER , "
                 + EXERCISE_NAME + " TEXT NOT NULL, "
                 + SETS + " INTEGER, "
                 + REPS + " INTEGER, "
@@ -151,11 +152,16 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
         return insert != -1;
     }
-    public boolean addToWorkoutHistoryTable(ActiveWorkoutExerciseModel model) {
+    public boolean addToWorkoutHistoryTable(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(WORKOUT_NAME, model.getExerciseName());
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yy");
+        String dateString = simpleDateFormat.format(date);
+
+        cv.put(DATE_TIME, dateString);
+        cv.put(WORKOUT_NAME, name);
 
         long insert = db.insert(WORKOUT_HISTORY_TABLE_NAME, null, cv);
 
@@ -166,6 +172,8 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
+        int workoutHistoryId = getHistoryId();
+            cv.put(WORKOUT_HISTORY_ID, workoutHistoryId);
             cv.put(EXERCISE_NAME, model.getExerciseName());
             cv.put(SETS, model.getSets());
             cv.put(REPS, model.getReps());
@@ -264,6 +272,17 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         }
         cursor.close();
         return workoutId;
+    }
+
+    public int getHistoryId() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + WORKOUT_HISTORY_ID + ") FROM " + WORKOUT_HISTORY_TABLE_NAME, null);
+        int historyId = -1;
+        if (cursor.moveToFirst()) {
+            historyId = cursor.getInt(0);
+        }
+        cursor.close();
+        return historyId;
     }
 
     @SuppressLint("Range")
@@ -413,6 +432,11 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         }
         cursor.close();
         return weights;
+    }
+
+    public ArrayList<ActiveWorkoutExerciseModel> getAllHistory() {
+            //TODO HAVE FUNCTION RETURN HISTORY
+        return null;
     }
 
 }

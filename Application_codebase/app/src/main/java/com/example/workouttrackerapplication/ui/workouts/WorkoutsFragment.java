@@ -18,14 +18,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
-import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WorkoutsFragment extends Fragment {
 
@@ -33,6 +30,7 @@ public class WorkoutsFragment extends Fragment {
     private FragmentWorkoutsBinding binding;
     private ArrayList<String> workoutsList;
     private WorkoutNameViewModel workoutNameViewModel;
+    protected String workoutName;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,8 +81,14 @@ public class WorkoutsFragment extends Fragment {
 
                         workoutNameViewModel = new ViewModelProvider(requireActivity()).get(WorkoutNameViewModel.class);
                         workoutNameViewModel.updateWorkoutName(clickedItem.toString());
+                        workoutName = workoutNameViewModel.getWorkoutName();
 
-                        transaction.replace(R.id.workouts_page, new ActiveWorkoutFragment());
+                        Bundle wOName = new Bundle();
+                        wOName.putString("workoutName", workoutName);
+                        ActiveWorkoutFragment activeWorkoutFragment = new ActiveWorkoutFragment();
+                        activeWorkoutFragment.setArguments(wOName);
+
+                        transaction.replace(R.id.workouts_page, activeWorkoutFragment);
                         transaction.addToBackStack("Active Workout Begin Transaction");
                         binding.fabAddWorkoutButton.hide();
                         binding.cardView2.setVisibility(View.GONE);
@@ -112,4 +116,5 @@ public class WorkoutsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
