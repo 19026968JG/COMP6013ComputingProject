@@ -41,4 +41,14 @@
     <string name="active_save_workout_button">Save Workout</string>
     <string name="active_cancel_workout_button">Cancel Workout</string>
 
+    <!-- LeaderBoard Buttons -->
+    <string name="leaderboard_title">Max Lift &#xA; Leaderboards</string>
+    <string name="bottom_nav_leaderboards">Leaderboards</string>
+
+    <string name="squat_leaderboard_button_text">Squat LeaderBoard</string>
+    <string name="bench_leaderboard_button_text">Bench LeaderBoard</string>
+    <string name="deadlift_leaderboard_button_text">Deadlift LeaderBoard</string>
+    <string name="total_leaderboard_button_text">Total LeaderBoard</string>
+
+
 </resources>

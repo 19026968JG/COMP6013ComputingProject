@@ -29,8 +29,6 @@ public class ChooseLeaderBoardFragment extends Fragment {
         binding = LeaderboardNavigationScreenBinding.inflate(inflater, container, false);
 
 
-
-
         return binding.getRoot();
     }
 }
