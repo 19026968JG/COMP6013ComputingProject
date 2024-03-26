@@ -158,7 +158,7 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
         String dateString = simpleDateFormat.format(date);
 
         cv.put(DATE_TIME, dateString);
