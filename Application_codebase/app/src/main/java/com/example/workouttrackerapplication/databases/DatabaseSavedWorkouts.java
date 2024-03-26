@@ -13,6 +13,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
+import com.example.workouttrackerapplication.ui.history.HistoryDisplayModel;
 
 import java.util.ArrayList;
 
@@ -363,9 +364,50 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return exercises;
     }
 
-    public ArrayList<ActiveWorkoutExerciseModel> getAllHistory() {
+    public ArrayList<HistoryDisplayModel> getAllHistory() {
             //TODO HAVE FUNCTION RETURN HISTORY
-        return null;
+
+        ArrayList<HistoryDisplayModel> history = new ArrayList<>();
+        ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sqlQuery = " SELECT " + WORKOUT_HISTORY_TABLE_NAME + "." + WORKOUT_NAME + ","
+                +WORKOUT_HISTORY_TABLE_NAME + "." + DATE_TIME
+//                + WORKOUT_HISTORY_ITEM_TABLE_NAME + "." + EXERCISE_NAME + ","
+//                + WORKOUT_HISTORY_ITEM_TABLE_NAME + "." + SETS + ","
+//                + WORKOUT_HISTORY_ITEM_TABLE_NAME + "." + REPS + ","
+//                + WORKOUT_HISTORY_ITEM_TABLE_NAME + "." + WEIGHT
+                + " FROM " + WORKOUT_HISTORY_TABLE_NAME;
+//                + " INNER JOIN " + WORKOUT_HISTORY_ITEM_TABLE_NAME
+//                + " ON " + WORKOUT_HISTORY_TABLE_NAME + "." + WORKOUT_HISTORY_ID
+//                + " = " + WORKOUT_HISTORY_ITEM_TABLE_NAME + "." + WORKOUT_HISTORY_ID;
+
+        Cursor cursor = db.rawQuery(sqlQuery,null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String workoutName = cursor.getString(cursor.getColumnIndex(WORKOUT_NAME));
+                @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex(DATE_TIME));
+//                @SuppressLint("Range") String exerciseName = cursor.getString(cursor.getColumnIndex(EXERCISE_NAME));
+//                @SuppressLint("Range") int sets = cursor.getInt(cursor.getColumnIndex(SETS));
+//                @SuppressLint("Range") String weight = cursor.getString(cursor.getColumnIndex(WEIGHT));
+//                @SuppressLint("Range") String reps = cursor.getString(cursor.getColumnIndex(REPS));
+
+//                exercises.add(new ActiveWorkoutExerciseModel(exerciseName,sets,weight,reps,false));
+
+
+                history.add(new HistoryDisplayModel(workoutName, date));
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+//        for (HistoryDisplayModel item :
+//                history) {
+//            System.out.println(item.toString() + "\n" + item.getExerciseList().toString());
+//        }
+
+        return history;
     }
 
     @SuppressLint("Range")

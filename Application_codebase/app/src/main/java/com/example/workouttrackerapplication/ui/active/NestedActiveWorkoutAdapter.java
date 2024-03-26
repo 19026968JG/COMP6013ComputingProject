@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.R;
+import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
     private Context context;
     private ArrayList<ActiveWorkoutExerciseModel> exerciseObject;
     private CompletedSetsAction listener;
+    private DatabaseSavedWorkouts db;
 
 
     public NestedActiveWorkoutAdapter(Context context, ArrayList<ActiveWorkoutExerciseModel> exerciseObject, CompletedSetsAction listener) {
@@ -32,6 +34,8 @@ public class NestedActiveWorkoutAdapter extends RecyclerView.Adapter<NestedActiv
         LayoutInflater inflater =LayoutInflater.from(context);
 
         View view = inflater.inflate((R.layout.active_workout_sets_layout_card), parent, false);
+
+        db = new DatabaseSavedWorkouts(context);
 
         return new NestedActiveWorkoutAdapter.NestedViewHolder(view);
     }

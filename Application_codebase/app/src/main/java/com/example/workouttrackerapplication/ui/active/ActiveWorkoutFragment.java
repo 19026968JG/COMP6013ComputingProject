@@ -29,8 +29,7 @@ import java.util.ArrayList;
 public class ActiveWorkoutFragment extends WorkoutsFragment {
     private
     ActiveWorkoutParentBinding binding;
-    private RecyclerView recyclerViewExercise;
-    private RecyclerView recyclerViewSet;
+    private RecyclerView recyclerViewExercise, recyclerViewSet;
     private RecyclerView.LayoutManager layoutManager;
     private DatabaseSavedWorkouts db;
     private int workoutId;

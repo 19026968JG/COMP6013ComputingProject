@@ -185,10 +185,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onSetCompleted(ActiveWorkoutExerciseModel model) {
         completedSets.add(model);
-        for (ActiveWorkoutExerciseModel exmodel:
-             completedSets) {
-            System.out.println(exmodel.toString());
-        }
     }
     @Override
     public void onSetRemoved(ActiveWorkoutExerciseModel model) {
