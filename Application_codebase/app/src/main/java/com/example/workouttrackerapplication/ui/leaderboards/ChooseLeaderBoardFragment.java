@@ -26,6 +26,7 @@ public class ChooseLeaderBoardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         binding = LeaderboardNavigationScreenBinding.inflate(inflater, container, false);
         binding.leaderboaradButtonCard.setVisibility(View.VISIBLE);
+        binding.leaderboardsSelectTitle.setVisibility(View.VISIBLE);
 
         FragmentManager manger = getChildFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
@@ -40,6 +41,7 @@ public class ChooseLeaderBoardFragment extends Fragment {
             transaction.replace(R.id.navigation_leaderboards, new MaxSquatBoard());
             transaction.addToBackStack("leaderboard");
             binding.leaderboaradButtonCard.setVisibility(View.GONE);
+            binding.leaderboardsSelectTitle.setVisibility(View.GONE);
             transaction.commit();
         });
 
@@ -49,6 +51,7 @@ public class ChooseLeaderBoardFragment extends Fragment {
                 transaction.replace(R.id.workouts_page, new MaxBenchBoard());
                 transaction.addToBackStack("leaderboard");
                 binding.leaderboaradButtonCard.setVisibility(View.GONE);
+                binding.leaderboardsSelectTitle.setVisibility(View.GONE);
                 transaction.commit();
             }
         });

@@ -1,19 +1,18 @@
 package com.example.workouttrackerapplication.ui.leaderboards;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding;
 import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
-import com.example.workouttrackerapplication.databinding.LeaderboardNavigationScreenBinding;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,11 +23,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MaxSquatBoard extends Fragment {
+public class MaxSquatBoard extends ChooseLeaderBoardFragment {
 
     private LeaderBoardSquatBinding binding;
-
-    private ArrayList<DataSnapshot> allMaxWeights;
+    private ListView squatLeaderboardList;
+    private ArrayList<String> allWeights;
     private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,10 +37,8 @@ public class MaxSquatBoard extends Fragment {
         View root = binding.getRoot();
 
         db = new DatabaseSavedWorkouts(getContext());
-        allMaxWeights = new ArrayList<>();
-        Map<String,Double> displayMap = new HashMap<>();
-
-
+        allWeights = new ArrayList<>();
+        squatLeaderboardList = binding.squatLeaderboardList;
 
         DatabaseReference fireDbRef = FirebaseDatabase
                 .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -50,22 +47,33 @@ public class MaxSquatBoard extends Fragment {
          fireDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                 for (DataSnapshot dataSnapshot :
-                         snapshot.getChildren()) {
-                     allMaxWeights.add(snapshot);
-//                     displayMap.put(snapshot.getChildren().toString(), snapshot.);
+
+                 int position = 1;
+
+                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                     allWeights.add(" Rank: " + position
+                             + "\t\t\t  " + dataSnapshot.child("userName").getValue(String.class)
+                             + " \t\t\t Highest: "
+                             + dataSnapshot.child("SQUAT").getValue(Long.class).toString());
+
+                     position++;
                  }
-                 System.out.println(allMaxWeights);
+                 populateLeaderboard();
              }
 
              @Override
              public void onCancelled(@NonNull DatabaseError error) {
-
+                 Log.e("DataBase Error", error.getMessage());
              }
          });
 
         return root;
+    }
 
+    private void populateLeaderboard() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.leaderboard_item_custom_layout,allWeights);
+       squatLeaderboardList.setAdapter(adapter);
     }
 
 }
