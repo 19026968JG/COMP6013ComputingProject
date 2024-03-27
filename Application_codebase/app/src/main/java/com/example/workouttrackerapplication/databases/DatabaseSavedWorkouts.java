@@ -285,6 +285,17 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return historyId;
     }
 
+    public int getUsername() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT MAX(" + USERNAME + ") FROM " + USER_TABLE_NAME, null);
+        int historyId = -1;
+        if (cursor.moveToFirst()) {
+            historyId = cursor.getInt(0);
+        }
+        cursor.close();
+        return historyId;
+    }
+
     @SuppressLint("Range")
     public int getWorkoutIdFromName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -365,11 +376,14 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     }
 
     public ArrayList<HistoryDisplayModel> getAllHistory() {
-            //TODO HAVE FUNCTION RETURN HISTORY
+
 
         ArrayList<HistoryDisplayModel> history = new ArrayList<>();
         ArrayList<ActiveWorkoutExerciseModel> exercises = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+
+
+        //TODO HAVE THIS METHOD RETURN HISTORY PROPERLY
 
         String sqlQuery = " SELECT " + WORKOUT_HISTORY_TABLE_NAME + "." + WORKOUT_NAME + ","
                 +WORKOUT_HISTORY_TABLE_NAME + "." + DATE_TIME

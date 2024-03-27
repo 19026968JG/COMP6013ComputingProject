@@ -1,4 +1,4 @@
 package com.example.workouttrackerapplication.ui.leaderboards;
 
-public class MaxTotalBoard {
+public class MaxTotalBoard extends ChooseLeaderBoardFragment{
 }
