@@ -4,15 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseModel;
 
 import java.util.ArrayList;
 
@@ -33,7 +32,6 @@ public class HistoryDisplayAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.history_display_card,parent,false);
 
-
         return new MyHistoryViewHolder(view);
 
     }
@@ -42,11 +40,11 @@ public class HistoryDisplayAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         HistoryDisplayModel model = previousWorkouts.get(position);
         MyHistoryViewHolder viewHolder = (MyHistoryViewHolder) holder;
-        viewHolder.workoutName.setText(model.getWorkoutName() + " completed on: " + model.getDate());
 
-//        NestedHistoryAdapter nestedHistoryAdapter = new NestedHistoryAdapter(context,model.getExerciseList());
-//        viewHolder.nestedRv.setLayoutManager(new LinearLayoutManager(context));
-//        viewHolder.nestedRv.setAdapter(nestedHistoryAdapter);
+        StringBuilder builder = new StringBuilder("Workout:\n" + model.getWorkoutName() + "\n"
+                + "Completed:\n" + model.getDate());
+
+        viewHolder.workoutName.setText(builder);
     }
 
     @Override
@@ -65,7 +63,6 @@ public class HistoryDisplayAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             super(itemView);
 
             workoutName = itemView.findViewById(R.id.historyWorkoutName);
-            nestedRv = itemView.findViewById(R.id.nestedHistoryRecyclerView);
         }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.ActiveWorkoutParentBinding;
+import com.example.workouttrackerapplication.ui.leaderboards.ChooseLeaderBoardFragment;
 import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,11 +96,14 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                 new AlertDialog.Builder(context)
                         .setTitle("Do You Want To Cancel This Workout? Your Progress Will Not Be Saved!")
                         .setPositiveButton("Yes", (dialog, which) -> {
-                            FragmentTransaction transaction = manager.beginTransaction();
-                            transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
-                            transaction.addToBackStack(null);
 
-                            transaction.commit();
+
+                            FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                            fragmentTransaction.replace(R.id.workouts_page, new WorkoutsFragment());
+                            fragmentTransaction.addToBackStack(null);
+                            manager.popBackStack();
+                            fragmentTransaction.commit();
+
 
 
                         })
@@ -135,10 +141,12 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                                                 break;
                                            }
                                        }
-                                       FragmentTransaction transaction = manager.beginTransaction();
-                                       transaction.replace(R.id.active_workout_fragment, new WorkoutsFragment());
-                                       transaction.addToBackStack(null);
-                                       transaction.commit();
+
+                                       FragmentTransaction fragmentTransaction = manager.beginTransaction();
+                                       fragmentTransaction.replace(R.id.workouts_page, new WorkoutsFragment());
+                                       manager.popBackStack();
+                                       fragmentTransaction.commit();
+
                                    })
                                    .setNegativeButton("No", (dialog, which) -> {
                                        dialog.dismiss();

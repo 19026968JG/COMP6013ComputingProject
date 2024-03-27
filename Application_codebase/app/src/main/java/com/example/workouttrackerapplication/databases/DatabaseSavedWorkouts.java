@@ -450,4 +450,20 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
          return userName;
     }
 
+    public void deleteWorkout(int workoutId){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String deleteQueryExerciseValues = " DELETE FROM " + EXERCISE_VALUES_TABLE_NAME
+                + " WHERE " + EXERCISE_VALUES_TABLE_NAME + "." + WORKOUT_ID + " =? ";
+
+        String deleteQueryWorkoutsTable = " DELETE FROM " + WORKOUTS_TABLE_NAME
+                + " WHERE " + WORKOUTS_TABLE_NAME + "." + WORKOUT_ID + " =? ";
+
+
+        db.execSQL(deleteQueryExerciseValues,new String[]{String.valueOf(workoutId)});
+        db.execSQL(deleteQueryWorkoutsTable,new String[]{String.valueOf(workoutId)});
+    }
+
+
+
 }

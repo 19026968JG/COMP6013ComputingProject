@@ -42,12 +42,14 @@ public class ActiveWorkoutFragment extends WorkoutsFragment {
 
         workoutNameViewModel = new ViewModelProvider(requireActivity()).get(WorkoutNameViewModel.class);
         db = new DatabaseSavedWorkouts(getContext());
-        workoutId = db.getWorkoutIdFromName(workoutNameViewModel.getWorkoutName());
+
 
         Bundle wOName = getArguments();
         if(wOName != null){
             workoutName = wOName.getString("workoutName");
         }
+
+        workoutId = db.getWorkoutIdFromName(workoutName);
 
         binding = ActiveWorkoutParentBinding.inflate(inflater, container,false);
         View root = binding.getRoot();
@@ -60,6 +62,17 @@ public class ActiveWorkoutFragment extends WorkoutsFragment {
 
         addExercisesToView();
 
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Toast.makeText(getContext(),"Use 'Cancel Workout' Button To Exit Without Saving", Toast.LENGTH_SHORT).show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),onBackPressedCallback);
+
+
+
         return root;
     }
 
@@ -71,7 +84,7 @@ public class ActiveWorkoutFragment extends WorkoutsFragment {
         exercises = db.getAllExercisesForWorkout(workoutId);
 
         manager = getActivity().getSupportFragmentManager();
-        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercises,manager,workoutName);
+        ActiveWorkoutAdapter adapter = new ActiveWorkoutAdapter(getContext(), exercises, manager,workoutName);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewExercise.setLayoutManager(layoutManager);
         recyclerViewExercise.setItemAnimator(new DefaultItemAnimator());

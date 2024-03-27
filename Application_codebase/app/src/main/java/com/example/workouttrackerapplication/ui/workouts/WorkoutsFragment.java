@@ -1,6 +1,7 @@
 package com.example.workouttrackerapplication.ui.workouts;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.activity.OnBackPressedCallback;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.R;
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 
 public class WorkoutsFragment extends Fragment {
 
-    private ListView savedWorkoutsList;
+    private RecyclerView savedWorkoutsList;
     private FragmentWorkoutsBinding binding;
     private ArrayList<String> workoutsList;
     private WorkoutNameViewModel workoutNameViewModel;
@@ -41,22 +45,19 @@ public class WorkoutsFragment extends Fragment {
         binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        savedWorkoutsList = binding.savedWorkoutsList;
+
         DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
         workoutsList = new ArrayList<>();
         workoutsList = db.getAllWorkoutNames();
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
         navBar.setVisibility(View.VISIBLE);
-        updateListDisplay();
 
-        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Toast.makeText(getContext(),"Use 'Cancel Workout' Button To Exit Without Saving", Toast.LENGTH_SHORT).show();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),onBackPressedCallback);
+        WorkoutViewAdapter adapter = new WorkoutViewAdapter(getContext(),workoutsList);
+        savedWorkoutsList = binding.workoutListView;
+        savedWorkoutsList.setLayoutManager(new GridLayoutManager(getContext(),1));
+        savedWorkoutsList.setAdapter(adapter);
+
 
         // Floating Action Button Functionality
         binding.fabAddWorkoutButton.setOnClickListener(new View.OnClickListener(){
@@ -69,56 +70,74 @@ public class WorkoutsFragment extends Fragment {
                 binding.cardView2.setVisibility(View.GONE);
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
-
-
             }
         });
 
-        binding.savedWorkoutsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getBindingAdapterPosition();
+                String workoutToRemove = workoutsList.get(position);
+                DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
 
-                Object clickedItem = parent.getItemAtPosition(position);
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Workout?")
+                        .setPositiveButton("Yes", (dialog, which) ->{
+                            int id = db.getWorkoutIdFromName(workoutToRemove);
+                            db.deleteWorkout(id);
+                            workoutsList.remove(position);
+
+                            adapter.notifyItemRemoved(position);
+
+                        })
+                        .setNegativeButton("No", (dialog, which) -> adapter.notifyItemChanged(position))
+                        .create()
+                        .show();
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(savedWorkoutsList);
+        adapter.setOnItemClickListener(new WorkoutViewAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(int position) {
+
+                String selectedWorkoutName = workoutsList.get(position);
 
                 new AlertDialog.Builder(requireContext())
 
-                    .setTitle("Start " + workoutsList.get(position) + "?")
-                    .setPositiveButton("Yes", (dialog,which) -> {
+                        .setTitle("Start " + workoutsList.get(position) + "?")
+                        .setPositiveButton("Yes", (dialog,which) -> {
 
-                        FragmentManager manager = getChildFragmentManager();
-                        FragmentTransaction transaction = manager.beginTransaction();
+                            FragmentManager manager = getChildFragmentManager();
+                            FragmentTransaction transaction = manager.beginTransaction();
 
-                        workoutNameViewModel = new ViewModelProvider(requireActivity()).get(WorkoutNameViewModel.class);
-                        workoutNameViewModel.updateWorkoutName(clickedItem.toString());
-                        workoutName = workoutNameViewModel.getWorkoutName();
+                            Bundle wOName = new Bundle();
+                            wOName.putString("workoutName", selectedWorkoutName);
+                            ActiveWorkoutFragment activeWorkoutFragment = new ActiveWorkoutFragment();
+                            activeWorkoutFragment.setArguments(wOName);
 
-                        Bundle wOName = new Bundle();
-                        wOName.putString("workoutName", workoutName);
-                        ActiveWorkoutFragment activeWorkoutFragment = new ActiveWorkoutFragment();
-                        activeWorkoutFragment.setArguments(wOName);
-
-                        transaction.replace(R.id.workouts_page, activeWorkoutFragment);
-                        transaction.addToBackStack("Active Workout Begin Transaction");
-                        binding.fabAddWorkoutButton.hide();
-                        binding.cardView2.setVisibility(View.GONE);
-                        navBar.setVisibility(View.GONE);
-                        transaction.commit();
-                    })
+                            transaction.replace(R.id.workouts_page, activeWorkoutFragment);
+                            transaction.addToBackStack("Active Workout Begin Transaction");
+                            binding.fabAddWorkoutButton.hide();
+                            binding.cardView2.setVisibility(View.GONE);
+                            navBar.setVisibility(View.GONE);
+                            transaction.commit();
+                        })
                         .setNegativeButton("No", (dialog,which)-> {
-                        dialog.dismiss();
-                    })
+                            dialog.dismiss();
+                        })
                         .create()
                         .show();
             }
         });
 
         return root;
-    }
-
-    private void updateListDisplay() {
-        ArrayAdapter<String> workoutListAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, workoutsList);
-        savedWorkoutsList.setAdapter(workoutListAdapter);
     }
 
     @Override

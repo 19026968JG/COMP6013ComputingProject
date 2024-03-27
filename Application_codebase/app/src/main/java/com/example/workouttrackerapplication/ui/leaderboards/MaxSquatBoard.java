@@ -3,16 +3,26 @@ package com.example.workouttrackerapplication.ui.leaderboards;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
+import com.example.workouttrackerapplication.ui.history.HistoryFragment;
+import com.example.workouttrackerapplication.ui.home.HomeFragment;
+import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,6 +78,19 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
              }
          });
 
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                FragmentManager parentFragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = parentFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.navigation_leaderboards, new ChooseLeaderBoardFragment());
+                fragmentTransaction.commit();
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),onBackPressedCallback);
         return root;
     }
 

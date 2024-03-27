@@ -8,9 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
+import com.example.workouttrackerapplication.databinding.LeaderBoardDeadliftBinding;
 import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,21 +27,20 @@ import java.util.ArrayList;
 
 public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
 
-    private LeaderBoardSquatBinding binding;
-    private ListView squatLeaderboardList;
+    private LeaderBoardDeadliftBinding binding;
+    private ListView deadliftLeaderboardList;
     private ArrayList<String> allWeights;
     private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState){
+                              ViewGroup container, Bundle savedInstanceState){
 
-        binding = LeaderBoardSquatBinding.inflate(inflater, container, false);
+        binding = LeaderBoardDeadliftBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         db = new DatabaseSavedWorkouts(getContext());
         allWeights = new ArrayList<>();
-        squatLeaderboardList = binding.squatLeaderboardList;
-
+        deadliftLeaderboardList = binding.deadliftLeaderboardList;
 
         DatabaseReference fireDbRef = FirebaseDatabase
                 .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -47,15 +51,16 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 int position = 1;
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    allWeights.add("\t Rank: " + position
-                            + "\t\t\t\t User: " + dataSnapshot.child("userName").getValue(String.class)
-                            + " \t\t\t\t Max Weight: "
+
+                    allWeights.add(" Rank: " + position
+                            + "\t\t\t  " + dataSnapshot.child("userName").getValue(String.class)
+                            + " \t\t\t Highest: "
                             + dataSnapshot.child("DEADLIFT").getValue(Long.class).toString());
 
                     position++;
                 }
-
                 populateLeaderboard();
             }
 
@@ -65,11 +70,24 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
             }
         });
 
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+
+                FragmentManager parentFragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = parentFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.navigation_leaderboards, new ChooseLeaderBoardFragment());
+                fragmentTransaction.commit();
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(),onBackPressedCallback);
         return root;
     }
 
     private void populateLeaderboard() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1,allWeights);
-        squatLeaderboardList.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.leaderboard_item_custom_layout,allWeights);
+        deadliftLeaderboardList.setAdapter(adapter);
     }
 }

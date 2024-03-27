@@ -8,8 +8,6 @@ public class HistoryDisplayModel {
 
     private String workoutName;
     private String date;
-//    private ArrayList<ActiveWorkoutExerciseModel> exerciseList;
-
 
     public HistoryDisplayModel(String workoutName, String date){
         this.workoutName = workoutName;
@@ -23,7 +21,5 @@ public class HistoryDisplayModel {
     public String getDate() {
         return date;
     }
-    //    public ArrayList<ActiveWorkoutExerciseModel> getExerciseList() {
-//        return exerciseList;
-//    }
+
 }
