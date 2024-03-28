@@ -7,8 +7,13 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import com.example.workouttrackerapplication.ExerciseModel;
@@ -16,6 +21,7 @@ import com.example.workouttrackerapplication.ui.active.ActiveWorkoutExerciseMode
 import com.example.workouttrackerapplication.ui.history.HistoryDisplayModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
 
@@ -464,6 +470,27 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         db.execSQL(deleteQueryWorkoutsTable,new String[]{String.valueOf(workoutId)});
     }
 
+    public List<String> getAllDates()  {
+        SQLiteDatabase db = getReadableDatabase();
+        List<String> dates = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-20yy");
+
+        String sqlQuery = " SELECT " + DATE_TIME + " FROM " + WORKOUT_HISTORY_TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(sqlQuery,null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range")String date = cursor.getString(cursor.getColumnIndex(DATE_TIME));
+                dates.add(date);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return dates;
+
+    }
 
 
 }
