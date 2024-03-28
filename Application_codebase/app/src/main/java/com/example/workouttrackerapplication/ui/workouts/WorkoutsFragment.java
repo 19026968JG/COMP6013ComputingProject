@@ -28,6 +28,8 @@ import com.example.workouttrackerapplication.databinding.FragmentWorkoutsBinding
 import com.example.workouttrackerapplication.ui.active.ActiveWorkoutFragment;
 import com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 

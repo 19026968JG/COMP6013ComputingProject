@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,6 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
 
@@ -42,10 +47,12 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
         allWeights = new ArrayList<>();
         deadliftLeaderboardList = binding.deadliftLeaderboardList;
 
+        Map<String, Long> sortWeights = new HashMap<>();
+
         DatabaseReference fireDbRef = FirebaseDatabase
                 .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("LeaderboardValues/Users");
-
+        fireDbRef.orderByChild("DEADLIFT");
         fireDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -54,13 +61,28 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
+                    String key = dataSnapshot.child("userName").getValue(String.class);
+                    Long value = dataSnapshot.child("DEADLIFT").getValue(Long.class);
+
+                    if(value != -1) {
+                        sortWeights.put(key,value);
+                    }
+                }
+                List<Map.Entry<String,Long>> sortedEntries = new ArrayList<>(sortWeights.entrySet());
+                sortedEntries.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+                for(Map.Entry<String,Long> entry : sortedEntries){
+                    String key = entry.getKey();
+                    String value = entry.getValue().toString();
+
                     allWeights.add(" Rank: " + position
-                            + "\t\t\t  " + dataSnapshot.child("userName").getValue(String.class)
+                            + "\t\t\t  " + key
                             + " \t\t\t Highest: "
-                            + dataSnapshot.child("DEADLIFT").getValue(Long.class).toString());
+                            + value);
 
                     position++;
                 }
+
                 populateLeaderboard();
             }
 
@@ -78,6 +100,7 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
                 FragmentManager parentFragmentManager = getParentFragmentManager();
                 FragmentTransaction fragmentTransaction = parentFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.navigation_leaderboards, new ChooseLeaderBoardFragment());
+                parentFragmentManager.popBackStack();
                 fragmentTransaction.commit();
 
             }

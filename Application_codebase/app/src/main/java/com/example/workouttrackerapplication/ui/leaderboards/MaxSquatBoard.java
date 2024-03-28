@@ -30,7 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MaxSquatBoard extends ChooseLeaderBoardFragment {
@@ -48,12 +50,14 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
 
         db = new DatabaseSavedWorkouts(getContext());
         allWeights = new ArrayList<>();
+        Map<String, Long> sortWeights = new HashMap<>();
         squatLeaderboardList = binding.squatLeaderboardList;
 
         DatabaseReference fireDbRef = FirebaseDatabase
                 .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
                 .getReference("LeaderboardValues/Users");
 
+        fireDbRef.orderByValue();
          fireDbRef.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -62,10 +66,24 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
 
                  for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
+                     String key = dataSnapshot.child("userName").getValue(String.class);
+                     Long value = dataSnapshot.child("SQUAT").getValue(Long.class);
+
+                     if(value != -1) {
+                         sortWeights.put(key,value);
+                     }
+                 }
+                 List<Map.Entry<String,Long>> sortedEntries = new ArrayList<>(sortWeights.entrySet());
+                 sortedEntries.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+                 for(Map.Entry<String,Long> entry : sortedEntries){
+                     String key = entry.getKey();
+                     String value = entry.getValue().toString();
+
                      allWeights.add(" Rank: " + position
-                             + "\t\t\t  " + dataSnapshot.child("userName").getValue(String.class)
+                             + "\t\t\t  " + key
                              + " \t\t\t Highest: "
-                             + dataSnapshot.child("SQUAT").getValue(Long.class).toString());
+                             + value);
 
                      position++;
                  }
