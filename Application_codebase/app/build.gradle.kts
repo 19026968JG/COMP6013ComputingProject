@@ -76,8 +76,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
 
-    //Material Calendar View
-    implementation("com.google.android.material:material:1.11.0")
+    //Material Calendar
     implementation("com.prolificinteractive:material-calendarview:1.4.2")
 
     testImplementation("junit:junit:4.13.2")
