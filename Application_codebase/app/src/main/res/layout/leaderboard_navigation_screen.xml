@@ -122,4 +122,16 @@
 
     </androidx.cardview.widget.CardView>
 
+    <Button
+        android:id="@+id/remove_button_leaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pink"
+        android:text="@string/remove_leaderboard_data"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboarad_button_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/leaderboards_select_title" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

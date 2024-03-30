@@ -49,6 +49,7 @@
     <string name="bench_leaderboard_button_text">Bench LeaderBoard</string>
     <string name="deadlift_leaderboard_button_text">Deadlift LeaderBoard</string>
     <string name="total_leaderboard_button_text">Total LeaderBoard</string>
+    <string name="remove_leaderboard_data">Remove Ranking Data</string>
 
 
 </resources>

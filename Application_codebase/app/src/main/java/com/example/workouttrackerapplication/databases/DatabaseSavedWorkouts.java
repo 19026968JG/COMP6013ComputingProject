@@ -291,12 +291,12 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
         return historyId;
     }
 
-    public int getUsername() {
+    public String getUsername() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT MAX(" + USERNAME + ") FROM " + USER_TABLE_NAME, null);
-        int historyId = -1;
+        String historyId = "";
         if (cursor.moveToFirst()) {
-            historyId = cursor.getInt(0);
+            historyId = cursor.getString(0);
         }
         cursor.close();
         return historyId;
