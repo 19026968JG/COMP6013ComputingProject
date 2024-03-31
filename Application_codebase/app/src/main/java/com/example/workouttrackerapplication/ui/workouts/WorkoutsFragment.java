@@ -38,8 +38,6 @@ public class WorkoutsFragment extends Fragment {
     private RecyclerView savedWorkoutsList;
     private FragmentWorkoutsBinding binding;
     private ArrayList<String> workoutsList;
-    private WorkoutNameViewModel workoutNameViewModel;
-    protected String workoutName;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,10 +66,11 @@ public class WorkoutsFragment extends Fragment {
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
 
-               transaction.add(R.id.workouts_page,  CreateWorkoutFragment.class,null);
+               transaction.replace(R.id.workouts_page,  new CreateWorkoutFragment(),null);
                 binding.cardView2.setVisibility(View.GONE);
                 binding.fabAddWorkoutButton.hide();
                 transaction.commit();
+
             }
         });
 
