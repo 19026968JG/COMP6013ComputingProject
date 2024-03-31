@@ -9,15 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.LeaderBoardDeadliftBinding;
-import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +32,6 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
     private LeaderBoardDeadliftBinding binding;
     private ListView deadliftLeaderboardList;
     private ArrayList<String> allWeights;
-    private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                               ViewGroup container, Bundle savedInstanceState){
@@ -43,7 +39,6 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
         binding = LeaderBoardDeadliftBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        db = new DatabaseSavedWorkouts(getContext());
         allWeights = new ArrayList<>();
         deadliftLeaderboardList = binding.deadliftLeaderboardList;
 
@@ -78,7 +73,7 @@ public class MaxDeadliftBoard extends ChooseLeaderBoardFragment{
                     allWeights.add(" Rank: " + position
                             + "\t\t\t  " + key
                             + " \t\t\t Highest: "
-                            + value);
+                            + value + "kg");
 
                     position++;
                 }

@@ -3,12 +3,10 @@ package com.example.workouttrackerapplication.ui.leaderboards;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -16,13 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
-import com.example.workouttrackerapplication.ui.history.HistoryFragment;
-import com.example.workouttrackerapplication.ui.home.HomeFragment;
-import com.example.workouttrackerapplication.ui.workouts.WorkoutsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +32,6 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
     private LeaderBoardSquatBinding binding;
     private ListView squatLeaderboardList;
     private ArrayList<String> allWeights;
-    private DatabaseSavedWorkouts db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
@@ -48,7 +39,6 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
         binding = LeaderBoardSquatBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        db = new DatabaseSavedWorkouts(getContext());
         allWeights = new ArrayList<>();
         Map<String, Long> sortWeights = new HashMap<>();
         squatLeaderboardList = binding.squatLeaderboardList;
@@ -83,7 +73,7 @@ public class MaxSquatBoard extends ChooseLeaderBoardFragment {
                      allWeights.add(" Rank: " + position
                              + "\t\t\t  " + key
                              + " \t\t\t Highest: "
-                             + value);
+                             + value + "kg");
 
                      position++;
                  }

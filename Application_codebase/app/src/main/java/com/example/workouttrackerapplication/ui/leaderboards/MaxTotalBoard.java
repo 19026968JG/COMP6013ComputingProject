@@ -14,8 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
-import com.example.workouttrackerapplication.databinding.LeaderBoardSquatBinding;
 import com.example.workouttrackerapplication.databinding.LeaderBoardTotalBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,14 +32,12 @@ public class MaxTotalBoard extends ChooseLeaderBoardFragment{
     private LeaderBoardTotalBinding binding;
     private ListView totalLeaderboardList;
     private ArrayList<String> allWeights;
-    private DatabaseSavedWorkouts db;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
 
         binding = LeaderBoardTotalBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        db = new DatabaseSavedWorkouts(getContext());
         allWeights = new ArrayList<>();
         Map<String, Long> sortWeights = new HashMap<>();
         totalLeaderboardList = binding.totalLeaderboardList;
@@ -60,7 +56,7 @@ public class MaxTotalBoard extends ChooseLeaderBoardFragment{
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     String key = dataSnapshot.child("userName").getValue(String.class);
-                    Long value = dataSnapshot.child("DEADLIFT").getValue(Long.class)
+                    long value = dataSnapshot.child("DEADLIFT").getValue(Long.class)
                             +dataSnapshot.child("BENCH").getValue(Long.class)
                             +dataSnapshot.child("SQUAT").getValue(Long.class);
 
@@ -78,7 +74,7 @@ public class MaxTotalBoard extends ChooseLeaderBoardFragment{
                     allWeights.add(" Rank: " + position
                             + "\t\t\t  " + key
                             + " \t\t\t Highest: "
-                            + value);
+                            + value + "kg");
 
                     position++;
                 }
