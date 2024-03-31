@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class ChooseLeaderBoardFragment extends Fragment {
 
-    private Button squatButton, benchButton, deadliftButton, totalButton, removeButton;
+    private Button squatButton, benchButton, deadliftButton, totalButton;
     private LeaderboardNavigationScreenBinding binding;
 
     public ChooseLeaderBoardFragment() {
@@ -44,7 +44,6 @@ public class ChooseLeaderBoardFragment extends Fragment {
         benchButton = binding.benchLeaderboardButton;
         deadliftButton = binding.deadliftLeaderboardButton;
         totalButton = binding.totalLeaderboardButton;
-        removeButton = binding.removeButtonLeaderboard;
 
         squatButton.setOnClickListener(v -> {
             transaction.replace(R.id.navigation_leaderboards, new MaxSquatBoard());
@@ -91,32 +90,7 @@ public class ChooseLeaderBoardFragment extends Fragment {
             }
         });
 
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-                new AlertDialog.Builder(requireContext())
-
-                        .setTitle("Do You Want To Remove Your Data From the Rankings?")
-                        .setPositiveButton("Yes", (dialog,which) -> {
-                            DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
-                            DatabaseReference reference = FirebaseDatabase
-                                    .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
-                                    .getReference("LeaderboardValues/Users");
-
-                            reference.child(db.getUsername()).removeValue();
-
-
-                        })
-                        .setNegativeButton("No", (dialog,which)-> {
-                            dialog.dismiss();
-                        })
-                        .create()
-                        .show();
-
-            }
-        });
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override

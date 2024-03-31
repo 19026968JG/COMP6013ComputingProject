@@ -11,9 +11,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.workouttrackerapplication.R;
 import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databases.FirebaseUserProfile;
 import com.example.workouttrackerapplication.databinding.UserLoginBinding;
+import com.example.workouttrackerapplication.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
@@ -45,15 +49,11 @@ public class UserLoginFragment extends Fragment {
 
         fdb = FirebaseDatabase.getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
-
-
         binding.saveLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
-
-
 
                 if (TextUtils.isEmpty(binding.usernameInput.getText().toString())) {
                     Toast.makeText(getContext(), "You Must Enter a Username to Continue",Toast.LENGTH_SHORT).show();
@@ -70,7 +70,11 @@ public class UserLoginFragment extends Fragment {
 
                                     saveUserToBothDatabases();
                                     Toast.makeText(context, "Username Saved", Toast.LENGTH_SHORT).show();
+
+                                    FragmentTransaction transaction = manager.beginTransaction();
+                                    transaction.replace(R.id.home_fragment, new HomeFragment());
                                     manager.popBackStack();
+                                    transaction.commit();
                                 }
                             }
 

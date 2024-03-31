@@ -28,4 +28,6 @@
     <!-- GREEN SHADES -->
     <color name="sage_green">#8A9A5B</color>
     <color name="green">#E416AA16</color>
+
+    <color name="yellow">#ffd700</color>
 </resources>

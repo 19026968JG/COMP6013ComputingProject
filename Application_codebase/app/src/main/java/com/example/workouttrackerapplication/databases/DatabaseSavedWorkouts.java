@@ -493,4 +493,24 @@ public class DatabaseSavedWorkouts extends SQLiteOpenHelper {
     }
 
 
+    public void wipeDataBase(){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String sqlDeleteUser = " DELETE FROM " + USER_TABLE_NAME ;
+        String sqlDeleteWorkouts = " DELETE FROM " + WORKOUTS_TABLE_NAME ;
+        String sqlDeleteExercises = " DELETE FROM " + EXERCISES_TABLE_NAME ;
+        String sqlDeleteExerciseValues = " DELETE FROM " + EXERCISE_VALUES_TABLE_NAME ;
+        String sqlDeleteHistory = " DELETE FROM " + WORKOUT_HISTORY_TABLE_NAME ;
+        String sqlDeleteHistoryItem = " DELETE FROM " + WORKOUT_HISTORY_ITEM_TABLE_NAME ;
+
+        db.execSQL(sqlDeleteUser);
+        db.execSQL(sqlDeleteWorkouts);
+        db.execSQL(sqlDeleteExercises);
+        db.execSQL(sqlDeleteExerciseValues);
+        db.execSQL(sqlDeleteHistory);
+        db.execSQL(sqlDeleteHistoryItem);
+
+    }
+
+
 }

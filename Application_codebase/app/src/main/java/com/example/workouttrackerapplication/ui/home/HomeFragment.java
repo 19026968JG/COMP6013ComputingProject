@@ -1,9 +1,11 @@
 package com.example.workouttrackerapplication.ui.home;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ import com.example.workouttrackerapplication.databases.DatabaseSavedWorkouts;
 import com.example.workouttrackerapplication.databinding.FragmentHomeBinding;
 import com.example.workouttrackerapplication.ui.user.UserLoginFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
@@ -37,6 +41,7 @@ public class HomeFragment extends Fragment {
     private List<String> dateList;
     private Calendar calendar;
     private TextView completedWorkoutTextView;
+    private Button removeButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,18 +52,17 @@ public class HomeFragment extends Fragment {
         View root = binding.getRoot();
         BottomNavigationView navigationView = getActivity().findViewById(R.id.nav_view);
         navigationView.setVisibility(View.VISIBLE);
+
+        DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
         MaterialCalendarView materialCalendar = binding.homeMaterialCalendar;
         completedWorkoutTextView = binding.editTextText2;
-        
-        DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
+        removeButton = binding.removeButton;
         dateList = db.getAllDates();
-
-        final TextView textView = binding.greetingTextHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         calendar = Calendar.getInstance();
-        checkIfFirstLogin();
         Set<CalendarDay> calendarDates = dateStringToHashSet(dateList, calendar);
+
+        // bring up login screen if first time using app
+        checkIfFirstLogin();
 
         materialCalendar.addDecorator(new CalendarDecoratorRecordedWorkouts(ContextCompat
                 .getColor(requireContext(),
@@ -69,7 +73,50 @@ public class HomeFragment extends Fragment {
                 + " Workouts Completed This Month");
         completedWorkoutTextView.setText(builder.toString());
 
-        System.out.println(monthlyWorkouts);
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new AlertDialog.Builder(requireContext())
+
+                        .setTitle("Warning! Please Read!")
+                        .setView(R.layout.alert_dialog_clear_data_warning_text)
+                        .setPositiveButton("Yes", (dialog,which) -> {
+
+
+
+                            new AlertDialog.Builder(requireContext())
+
+                                    .setTitle("LAST CHANCE")
+                                    .setPositiveButton("Delete All Data", (dialog1, which1) -> {
+
+                                        DatabaseSavedWorkouts db = new DatabaseSavedWorkouts(getContext());
+                                        DatabaseReference reference = FirebaseDatabase
+                                                .getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/")
+                                                .getReference("LeaderboardValues/Users");
+
+                                        reference.child(db.getUsername()).removeValue();
+                                        db.wipeDataBase();
+
+                                        FragmentManager manager = getChildFragmentManager();
+                                        FragmentTransaction transaction = manager.beginTransaction();
+                                        transaction.replace(R.id.home_fragment, new HomeFragment());
+                                        manager.popBackStack();
+                                        transaction.commit();
+
+                                    })
+                                    .setNegativeButton(" I Want To Keep My Data", ((dialog1, which1) -> dialog1.dismiss()))
+                                    .create().show();
+
+                        })
+                        .setNegativeButton("No", (dialog,which)-> {
+                            dialog.dismiss();
+                        })
+                        .create()
+                        .show();
+
+            }
+        });
 
         return root;
     }

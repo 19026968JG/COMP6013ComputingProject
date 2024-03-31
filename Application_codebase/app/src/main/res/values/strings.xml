@@ -24,6 +24,14 @@
     <string name="ex_name">Exercise Name</string>
     <string name="add_exercise_title">Add Exercise</string>
 
+    <!-- Home Screen -->
+    <string name="remove_profile_data">Delete All Profile Data</string>
+    <string name="clear_data_warning">
+        WARNING!! &#xA;
+        This Action Will Remove All Your Saved Data And CANNOT Be Undone.&#xA;
+        Do You Wish To Continue?
+    </string>
+
     <!-- Workouts -->
     <string name="workouts_title">Workouts</string>
     <string name="FAB_description">add new exercise</string>
@@ -49,7 +57,7 @@
     <string name="bench_leaderboard_button_text">Bench LeaderBoard</string>
     <string name="deadlift_leaderboard_button_text">Deadlift LeaderBoard</string>
     <string name="total_leaderboard_button_text">Total LeaderBoard</string>
-    <string name="remove_leaderboard_data">Remove Ranking Data</string>
+
 
 
 </resources>
