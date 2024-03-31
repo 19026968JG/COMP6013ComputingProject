@@ -51,7 +51,7 @@ public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
                     }
                     CreateWorkoutFragment.checkForUpdates();
                 })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> CreateExerciseDialogFragment.this.getDialog().cancel());
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
         return builder.create();
     }

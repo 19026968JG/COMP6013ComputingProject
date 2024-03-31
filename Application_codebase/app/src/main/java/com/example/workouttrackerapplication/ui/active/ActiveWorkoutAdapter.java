@@ -104,8 +104,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                             manager.popBackStack();
                             fragmentTransaction.commit();
 
-
-
                         })
                         .setNegativeButton("No", (dialog, which) -> {
                             dialog.dismiss();

@@ -53,7 +53,6 @@ public class CreateWorkoutFragment extends Fragment {
         displayList = new ArrayList<>();
         wList = binding.workoutList;
         databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
-//        wList.addFooterView(footer);
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
 
@@ -93,11 +92,9 @@ public class CreateWorkoutFragment extends Fragment {
                         Toast.makeText(getContext(),"Error Adding Workout", Toast.LENGTH_SHORT).show();
                     }
                     navBar.setVisibility(View.VISIBLE);
-                    FloatingActionButton floatingActionButton = requireActivity().findViewById(R.id.fab_add_workout_button);
                     FragmentManager manager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = manager.beginTransaction();
-
                     manager.popBackStack();
+
 
                 }
             }
@@ -127,12 +124,11 @@ public class CreateWorkoutFragment extends Fragment {
             public void onClick(View v) {
                 FloatingActionButton floatingActionButton = requireActivity().findViewById(R.id.fab_add_workout_button);
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
 
                 floatingActionButton.show();
                 navBar.setVisibility(View.VISIBLE);
-
                 manager.popBackStack();
+
             }
         });
 
