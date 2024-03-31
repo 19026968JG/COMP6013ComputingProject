@@ -21,7 +21,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/dark_slate_grey">
 
             <Button
                 android:id="@+id/cancel_build_button"
@@ -30,8 +31,8 @@
                 android:layout_marginStart="52dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="52dp"
-                android:text="@string/cancel"
                 android:background="@drawable/cancel_button"
+                android:text="@string/cancel"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,14 +61,17 @@
         android:id="@+id/save_workout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/title_cardView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/dark_slate_grey">
 
             <Button
                 android:id="@+id/save_workout_button"
@@ -101,10 +105,9 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/title_cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -133,20 +136,44 @@
 
     </androidx.cardview.widget.CardView>
 
-    <ListView
-        android:id="@+id/workout_list"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/list_view_card"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        android:backgroundTint="@color/charcoal"
-        android:divider="@color/white"
-        android:dividerHeight="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/light_slate_grey"
+        android:padding="8dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/add_exercise_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/save_workout" />
+        app:layout_constraintTop_toBottomOf="@+id/save_workout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/dark_slate_grey"
+            android:padding="16sp">
+
+            <ListView
+                android:id="@+id/workout_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/dark_slate_grey"
+                android:backgroundTintMode="add"
+                android:divider="@color/white"
+                android:dividerHeight="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
