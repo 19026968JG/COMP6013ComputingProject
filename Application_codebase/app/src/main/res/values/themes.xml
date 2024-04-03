@@ -3,7 +3,7 @@
     <style name="Theme.WorkoutTrackerApplication" parent="Theme.AppCompat.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/charcoal</item>
-        <item name="colorPrimaryVariant">@color/steel_grey</item>
+        <item name="colorPrimaryVariant">@color/charcoal</item>
         <item name="colorOnPrimary">@color/charcoal</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:background">?attr/colorPrimary</item>
