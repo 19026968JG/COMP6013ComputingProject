@@ -1,29 +1,23 @@
 package com.example.workouttrackerapplication.ui.create_workout;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.viewmodel.CreationExtras;
 
 import com.example.workouttrackerapplication.ExerciseModel;
 import com.example.workouttrackerapplication.R;
-import com.example.workouttrackerapplication.databinding.AlertDialogueBinding;
 
 public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
 
@@ -39,24 +33,25 @@ public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
 
 
                     ExerciseModel exerciseModel;
-
-                    try{
-                        exerciseModel = new ExerciseModel(
-                                exName.getText().toString(),
-                                Integer.parseInt(sets.getText().toString()),
-                                Integer.parseInt(reps.getText().toString()),
-                                Integer.parseInt(weight.getText().toString()),
-                                -1);
-                        createWorkoutFragment.displayList.add(exerciseModel);
-                    }
-                    catch (Exception e){
+                    if (TextUtils.isEmpty(exName.getText()) || TextUtils.isEmpty(sets.getText()) ||
+                            TextUtils.isEmpty(reps.getText()) || TextUtils.isEmpty(weight.getText())){
                         Toast.makeText(getContext(), "Error Adding Exercise " +
                                 "\n Please Complete All Fields", Toast.LENGTH_LONG).show();
-
+                    }else {
+                        try {
+                            exerciseModel = new ExerciseModel(
+                                    exName.getText().toString(),
+                                    Integer.parseInt(sets.getText().toString()),
+                                    Integer.parseInt(reps.getText().toString()),
+                                    Double.parseDouble(weight.getText().toString()));
+                            CreateWorkoutFragment.displayList.add(exerciseModel);
+                        } catch (Exception e) {
+                            Log.e("Error Adding Exercise", e.getMessage());
+                        }
                     }
-                    createWorkoutFragment.checkForUpdates();
+                    CreateWorkoutFragment.checkForUpdates();
                 })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> CreateExerciseDialogFragment.this.getDialog().cancel());
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
         return builder.create();
     }

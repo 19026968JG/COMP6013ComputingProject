@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_navigation_home_to_userLoginFragment"
             app:destination="@id/userLoginFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_chooseLeaderBoardFragment"
+            app:destination="@id/navigation_leaderboards" />
     </fragment>
 
     <fragment
@@ -48,13 +51,17 @@
 
     <fragment
         android:id="@+id/navigation_create_workout"
-        android:name="com.example.workouttrackerapplication.ui.create_workout.createWorkoutFragment"
+        android:name="com.example.workouttrackerapplication.ui.create_workout.CreateWorkoutFragment"
         android:label="@string/title_create_workout"
         tools:layout="@layout/fragment_create_workout"/>
     <fragment
         android:id="@+id/userLoginFragment"
         android:name="com.example.workouttrackerapplication.ui.user.UserLoginFragment"
         android:label="UserLoginFragment" />
+    <fragment
+        android:id="@+id/navigation_leaderboards"
+        android:name="com.example.workouttrackerapplication.ui.leaderboards.ChooseLeaderBoardFragment"
+        android:label="ChooseLeaderBoardFragment" />
 
 
 </navigation>

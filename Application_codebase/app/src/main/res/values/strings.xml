@@ -7,7 +7,7 @@
     <string name="title_history">History</string>
     <string name="title_create_workout">Create Workout</string>
 
-    <string name="homepage_greeting">WELCOME! Lets get a Workout Going!</string>
+    <string name="homepage_greeting">WELCOME!&#xA;Lets get a Workout Going!</string>
     <string name="workouts_completed">you have completed NULL workouts this month</string>
     <string name="workouts_placeholder">Workouts Page</string>
 
@@ -15,14 +15,27 @@
     <string name="add_new_workout_button_description">Add new Workout Template</string>
     <string name="title_activity_create_workout_screen">createWorkoutScreen</string>
 
-    <!-- Alert Dialogue -->
+    <!-- Alert Dialogue/Active Workout -->
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="sets">Sets</string>
     <string name="reps">Reps</string>
-    <string name="weight">Weight (kg)</string>
+    <string name="weight">Weight(kg)</string>
     <string name="ex_name">Exercise Name</string>
     <string name="add_exercise_title">Add Exercise</string>
+
+    <!-- Home Screen -->
+    <string name="remove_profile_data">Delete All Profile Data</string>
+    <string name="clear_data_warning">
+        WARNING!! &#xA;
+        This Action Will Remove All Your Saved Data And CANNOT Be Undone.&#xA;
+        Do You Wish To Continue?
+    </string>
+
+    <!-- Workouts -->
+    <string name="workouts_title">Workouts</string>
+    <string name="FAB_description">add new exercise</string>
+    <string name="checkbox_header">✔</string>
 
     <!-- User Login -->
     <string name="user_login_welcome">Welcome! &#xA; As a First Time User, &#xA; Please Choose a Username"</string>
@@ -31,4 +44,20 @@
     <string name="username_visible">Username (Visible on LeaderBoard)</string>
     <string name="username">Username</string>
     <string name="save_details">Save Username</string>
+
+    <!-- Active workout -->
+    <string name="active_save_workout_button">Save Workout</string>
+    <string name="active_cancel_workout_button">Cancel Workout</string>
+
+    <!-- LeaderBoard Buttons -->
+    <string name="leaderboard_title">Max Lift &#xA; Leaderboards</string>
+    <string name="bottom_nav_leaderboards">Leaderboards</string>
+
+    <string name="squat_leaderboard_button_text">Squat LeaderBoard</string>
+    <string name="bench_leaderboard_button_text">Bench LeaderBoard</string>
+    <string name="deadlift_leaderboard_button_text">Deadlift LeaderBoard</string>
+    <string name="total_leaderboard_button_text">Total LeaderBoard</string>
+
+
+
 </resources>
