@@ -33,7 +33,7 @@ public class CreateWorkoutFragment extends Fragment {
 
     private FragmentCreateWorkoutBinding binding;
     DatabaseSavedWorkouts databaseSavedWorkouts;
-    static ListView wList;
+//    static ListView wList;
     static ArrayList<ExerciseModel> displayList;
     private Button addExButton;
 
@@ -51,10 +51,13 @@ public class CreateWorkoutFragment extends Fragment {
 
 
         displayList = new ArrayList<>();
-        wList = binding.workoutList;
+        ListView wList = binding.workoutList;
         databaseSavedWorkouts = new DatabaseSavedWorkouts(getContext());
-
         BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
+
+        createWorkoutArrayAdapter = new ArrayAdapter<>(wList.getContext(), android.R.layout.simple_list_item_1, displayList);
+        wList.setAdapter(createWorkoutArrayAdapter);
+
 
         binding.addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +96,9 @@ public class CreateWorkoutFragment extends Fragment {
                     }
                     navBar.setVisibility(View.VISIBLE);
                     FragmentManager manager = requireActivity().getSupportFragmentManager();
-                    manager.popBackStack();
+                    FragmentTransaction transaction = manager.beginTransaction();
+                    transaction.replace(R.id.workouts_page, new WorkoutsFragment());
+                    transaction.commit();
 
 
                 }
@@ -135,15 +140,6 @@ public class CreateWorkoutFragment extends Fragment {
         return binding.getRoot();
     }
 
-    public static void checkForUpdates(){
-
-        if(createWorkoutArrayAdapter == null){
-            createWorkoutArrayAdapter = new ArrayAdapter<>(wList.getContext(), android.R.layout.simple_list_item_1, displayList);
-            wList.setAdapter(createWorkoutArrayAdapter);
-        } else {
-            createWorkoutArrayAdapter.notifyDataSetChanged();
-        }
-    }
 
     @Override
     public void onDestroyView() {

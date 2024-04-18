@@ -49,10 +49,9 @@ public class CreateExerciseDialogFragment extends AppCompatDialogFragment {
                             Log.e("Error Adding Exercise", e.getMessage());
                         }
                     }
-                    CreateWorkoutFragment.checkForUpdates();
+                    CreateWorkoutFragment.createWorkoutArrayAdapter.notifyDataSetChanged();
                 })
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
-
         return builder.create();
     }
 }

@@ -20,6 +20,7 @@ import com.example.workouttrackerapplication.databinding.UserLoginBinding;
 import com.example.workouttrackerapplication.ui.home.HomeFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +47,9 @@ public class UserLoginFragment extends Fragment {
         binding = UserLoginBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         db = new DatabaseSavedWorkouts(getContext());
+
+        BottomNavigationView navBar = getActivity().findViewById(R.id.nav_view);
+        navBar.setVisibility(View.GONE);
 
         fdb = FirebaseDatabase.getInstance("https://workoutdatabaseserver-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
