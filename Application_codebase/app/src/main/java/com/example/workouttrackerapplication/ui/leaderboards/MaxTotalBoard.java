@@ -53,12 +53,23 @@ public class MaxTotalBoard extends ChooseLeaderBoardFragment{
 
                 int position = 1;
 
+
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     String key = dataSnapshot.child("userName").getValue(String.class);
-                    long value = dataSnapshot.child("DEADLIFT").getValue(Long.class)
-                            +dataSnapshot.child("BENCH").getValue(Long.class)
-                            +dataSnapshot.child("SQUAT").getValue(Long.class);
+                    long value = 0;
+                    long deadlift = dataSnapshot.child("DEADLIFT").getValue(Long.class);
+                    long squat = dataSnapshot.child("SQUAT").getValue(Long.class);
+                    long bench = dataSnapshot.child("BENCH").getValue(Long.class);
+                    if (deadlift >=0){
+                        value += deadlift;
+                    }
+                    if (squat >=0){
+                        value += squat;
+                    }
+                    if (bench >=0){
+                        value += bench;
+                    }
 
                     if(value > 0) {
                         sortWeights.put(key,value);

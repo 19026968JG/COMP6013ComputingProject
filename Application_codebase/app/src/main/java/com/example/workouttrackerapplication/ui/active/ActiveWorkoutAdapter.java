@@ -101,7 +101,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
                             FragmentTransaction fragmentTransaction = manager.beginTransaction();
                             fragmentTransaction.replace(R.id.workouts_page, new WorkoutsFragment());
                             fragmentTransaction.addToBackStack(null);
-                            manager.popBackStack();
                             fragmentTransaction.commit();
 
                         })
@@ -142,7 +141,6 @@ public class ActiveWorkoutAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                                        FragmentTransaction fragmentTransaction = manager.beginTransaction();
                                        fragmentTransaction.replace(R.id.workouts_page, new WorkoutsFragment());
-                                       manager.popBackStack();
                                        fragmentTransaction.commit();
 
                                    })
